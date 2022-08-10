@@ -1,5 +1,6 @@
 package com.memorymakerpeople.memoryrollingpaper.domain;
 
+import com.sun.istack.NotNull;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -16,8 +17,17 @@ public class Member implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Integer id;
-    public String username;//아이디
+    @NotNull
+    private Long id;
+    @NotNull
+    private String username;//아이디
+    @NotNull
+    private String email;
     private String nickname;
 
+    @Builder
+    public Member(String username, String email) {
+        this.username = username;
+        this.email = email;
+    }
 }
