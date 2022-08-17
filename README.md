@@ -30,7 +30,7 @@
 - React + Typescript
 - 스타일 : scss
 - 배포 : vercel
-- Lint
+- ESLint / Prettier
 - 상태관리 : context
 
 ### 백엔드
