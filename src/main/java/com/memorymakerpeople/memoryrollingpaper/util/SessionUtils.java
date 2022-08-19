@@ -1,6 +1,6 @@
 package com.memorymakerpeople.memoryrollingpaper.util;
 
-import com.memorymakerpeople.memoryrollingpaper.domain.Member;
+import com.memorymakerpeople.memoryrollingpaper.member.model.Member;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;

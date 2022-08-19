@@ -1,6 +1,5 @@
 package com.memorymakerpeople.memoryrollingpaper.config;
 
-import com.minji.idusbackend.member.JwtUserDetailsService;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,8 +18,6 @@ import java.io.IOException;
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
 
-    @Autowired
-    private JwtUserDetailsService jwtUserDetailsService;
 
     @Autowired
     private JwtTokenUtil jwtTokenUtil;

@@ -14,20 +14,6 @@ public enum BaseResponseStatus {
     INVALID_USER_STATUS(false, 2004, "삭제되거나 휴면인 계정의 접근입니다."),
     INVALID_USER_PASSWORD(false, 2005, "잘못된 비밀번호입니다."),
 
-    // [POST] /products
-    POST_PRODUCTS_EMPTY_BRANDIDX(false, 2100, "브랜드 IDX 를 입력해주세요."),
-    POST_PRODUCTS_EMPTY_CATEGORYIDX(false, 2101, "카테고리 IDX 를 입력해주세요."),
-    POST_PRODUCTS_EMPTY_NAME(false, 2102, "상품이름을 입력해주세요."),
-    POST_PRODUCTS_EMPTY_PRICE(false, 2103, "가격을 입력해주세요."),
-    POST_PRODUCTS_EMPTY_SALEPRICE(false, 2104, "할인가격을 입력해주세요."),
-    POST_PRODUCTS_EMPTY_DELIVERYTYPE(false, 2105, "배송유형을 입력해주세요."),
-    POST_PRODUCTS_EMPTY_ISTODAYDEAL(false, 2106, "세일 여부를 입력해주세요."),
-    POST_PRODUCTS_EMPTY_CONTENTS(false, 2106, "오늘의 세일 여부를 입력해주세요."),
-    POST_PRODUCTS_INVALID_DELIVERYTYPE(false, 2110, "잘못된 배송유형이 입력되었습니다."),
-    POST_PRODUCTS_INVALID_ISTODAYDEAL(false, 2111, "잘못된 오늘의세일 여부가 입력되었습니다."),
-    POST_PRODUCTS_INVALID_FILES(false, 2112, "파일 형식을 다시 확인해 주세요."),
-    POST_PRODUCTS_PRE_EXIST_PRODUCT(false, 2120, "이미 존재하는 상품의 이름이 입력되었습니다."),
-
     // [PATCH] /users
     PATCH_PRE_DELETED_USER(false, 2040, "이미 탈퇴한 회원입니다."),
 

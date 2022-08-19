@@ -1,9 +1,7 @@
 package com.memorymakerpeople.memoryrollingpaper.utils.oauth2;
 
-import com.minji.idusbackend.config.JwtTokenUtil;
-import com.minji.idusbackend.member.MemberDao;
-import com.minji.idusbackend.member.MemberProvider;
-import com.minji.idusbackend.member.model.UserLoginResWithStatus;
+import com.memorymakerpeople.memoryrollingpaper.member.MemberDao;
+import com.memorymakerpeople.memoryrollingpaper.member.model.UserLoginResWithStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;

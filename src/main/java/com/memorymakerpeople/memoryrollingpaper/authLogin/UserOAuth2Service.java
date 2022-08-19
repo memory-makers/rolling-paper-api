@@ -1,9 +1,8 @@
 package com.memorymakerpeople.memoryrollingpaper.authLogin;
 
 
-import com.memorymakerpeople.memoryrollingpaper.domain.Member;
-import com.memorymakerpeople.memoryrollingpaper.repository.MemberRepository;
-import lombok.Builder;
+import com.memorymakerpeople.memoryrollingpaper.member.model.Member;
+import com.memorymakerpeople.memoryrollingpaper.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
