@@ -1,6 +1,9 @@
 package com.memorymakerpeople.memoryrollingpaper.utils.oauth2;
 
+import com.memorymakerpeople.memoryrollingpaper.authLogin.UserLoginRes;
+import com.memorymakerpeople.memoryrollingpaper.config.JwtTokenUtil;
 import com.memorymakerpeople.memoryrollingpaper.member.MemberDao;
+import com.memorymakerpeople.memoryrollingpaper.member.MemberProvider;
 import com.memorymakerpeople.memoryrollingpaper.member.model.UserLoginResWithStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -38,15 +41,15 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         Map<String, Object> kakao_account = (Map<String, Object>) oAuth2User.getAttributes().get("kakao_account");
         String email = (String) kakao_account.get("email");
-        UserLoginResWithStatus userLoginResWithStatus = memberProvider.findByEmail(email);
+        UserLoginRes userLoginRes = memberProvider.findByEmail(email);
 
-        if(userLoginResWithStatus.getStatus()==2) {
-            getRedirectStrategy().sendRedirect(request, response, UriComponentsBuilder.fromUriString("http://www.alittlevanilla.kro.kr/leavemember")
+        //여기 뭐임? 수정좀 해야할듯
+        if(userLoginRes.getId() == null) {
+            getRedirectStrategy().sendRedirect(request, response, UriComponentsBuilder.fromUriString("http://www.서버주소.co.kr/leavemember")
                     .build().toUriString());
-
         }
 
-        String jwt = jwtTokenUtil.generateToken(userLoginResWithStatus.getUserLoginRes());
+        String jwt = jwtTokenUtil.generateToken(userLoginRes);
 
         String url = makeRedirectUrl(jwt);
         System.out.println("url: " + url);
@@ -60,7 +63,9 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
 
     private String makeRedirectUrl(String token) {
-        return UriComponentsBuilder.fromUriString("http://www.alittlevanilla.kro.kr/oauth2/redirect/"+token)
+        /*return UriComponentsBuilder.fromUriString("http://www.alittlevanilla.kro.kr/oauth2/redirect/"+token)
+                .build().toUriString();*/
+        return UriComponentsBuilder.fromUriString("http://www.서버주소.co.kr/oauth2/redirect/"+token)
                 .build().toUriString();
     }
 }

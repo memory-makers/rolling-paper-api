@@ -54,6 +54,14 @@ public class MemberDao {
                 ), email);
     }
 
+    public int checkEmail(String email) {
+        String checkEmailQuery = "select exists(select email from tbl_user where email = ?)";
+        String checkEmailParams = email;
+        return this.jdbcTemplate.queryForObject(checkEmailQuery,
+                int.class,
+                checkEmailParams);
+    }
+
     public Boolean getUserEmail(String email) {
         String findEmailQuery = "SELECT * FROM tbl_user WHERE email=?";
         try {
