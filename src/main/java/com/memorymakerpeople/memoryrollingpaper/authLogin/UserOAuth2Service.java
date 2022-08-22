@@ -36,19 +36,19 @@ public class UserOAuth2Service extends DefaultOAuth2UserService {
         Map<String, Object> kakao_account = (Map<String, Object>) attributes.get("kakao_account");
         String email = (String) kakao_account.get("email");
 
-        Map<String, Object> properties = (Map<String, Object>) attributes.get("properties");
-        String nickname = (String) properties.get("nickname");
+        Map<String, Object> properties = (Map<String, Object>) attributes.get("id");
+        String id = (String) properties.get("id");
 
         Member member = Member.builder()
                 .email(email)
-                .username(nickname) // 여기 수정해야됨.
+                .username(id) // 여기 수정해야됨.
                 .build();
+        log.info("member :: " + member);
         if (!memberRepository.existsByEmail(email)) {
             memberRepository.save(member);
         } else {
             System.out.println("가입한적 있음.");
         }
-
         return new DefaultOAuth2User(Collections.singleton(new SimpleGrantedAuthority("ROLE_MEMBER")), attributes, "id");
     }
 

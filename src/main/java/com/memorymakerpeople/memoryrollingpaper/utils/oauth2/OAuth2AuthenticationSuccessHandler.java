@@ -50,7 +50,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         }
 
         String jwt = jwtTokenUtil.generateToken(userLoginRes);
-
+        logger.info("jwt :: " + jwt);
         String url = makeRedirectUrl(jwt);
         System.out.println("url: " + url);
 
