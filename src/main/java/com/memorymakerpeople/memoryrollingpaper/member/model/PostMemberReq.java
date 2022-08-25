@@ -10,4 +10,9 @@ public class PostMemberReq {
     private String username;
     private String email;
     private String password;
+
+    public PostMemberReq(String id, String email) {
+        this.username = id;
+        this.email = email;
+    }
 }

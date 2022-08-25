@@ -12,7 +12,7 @@ import java.util.List;
 @Service
 public class PaperService {
 
-    @Autowired
+    /*@Autowired
     private PaperRepository paperRepository;
 
     @Autowired
@@ -39,13 +39,13 @@ public class PaperService {
         PaperResponseDto paperResponseDto = new PaperResponseDto();
         String paperId = String.valueOf(paper.getPaperId());
         paperResponseDto.setCardList(cardRepository.findByPaperId(paperId));
-        /*paperResponseDto.setUserId(paper.getUserId());
+        *//*paperResponseDto.setUserId(paper.getUserId());
         paperResponseDto.setPaperUrl(paper.getPaperUrl());
         paperResponseDto.setPaperTitle(paper.getPaperTitle());
         paperResponseDto.setPaperId(paper.getPaperId());
         paperResponseDto.setDueDt(paper.getDueDt());
         paperResponseDto.setTheme(paper.getTheme());
-        paperResponseDto.setOpenStatus(paper.getOpenStatus());*/
+        paperResponseDto.setOpenStatus(paper.getOpenStatus());*//*
         return paperResponseDto;
     }
 
@@ -74,5 +74,5 @@ public class PaperService {
         }
 
         return result;
-    }
+    }*/
 }

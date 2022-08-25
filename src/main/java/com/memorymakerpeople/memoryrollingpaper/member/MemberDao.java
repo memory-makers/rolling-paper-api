@@ -40,6 +40,7 @@ public class MemberDao {
         return new PostMemberRes(lastInsertIdx, 1);
     }
 
+
     public UserLoginRes findByEmail(String email) {
         String getEmailQuery = "SELECT * FROM tbl_user LEFT OUTER JOIN authority on tbl_user.id=authority.member_idx WHERE email=?";
 

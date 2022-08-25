@@ -12,7 +12,7 @@ import java.util.Optional;
 @Service
 public class StickerService {
 
-    @Autowired
+    /*@Autowired
     private StickerRepository stickerRepository;
 
     public StickerResponseDto selectSticker(StickerRequestDto stickerRequestDto) {
@@ -60,7 +60,7 @@ public class StickerService {
         result.message = "Sticker delete";
         return result;
     }
-/*
+
     public CardResponseDto createCard(Card card) {
         CardResponseDto responseDto = new CardResponseDto();
         responseDto.message = "Card Create";

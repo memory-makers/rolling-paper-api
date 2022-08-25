@@ -43,9 +43,8 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         String email = (String) kakao_account.get("email");
         UserLoginRes userLoginRes = memberProvider.findByEmail(email);
 
-        //여기 뭐임? 수정좀 해야할듯
         if(userLoginRes.getId() == null) {
-            getRedirectStrategy().sendRedirect(request, response, UriComponentsBuilder.fromUriString("http://www.서버주소.co.kr/leavemember")
+            getRedirectStrategy().sendRedirect(request, response, UriComponentsBuilder.fromUriString("https://rolling-pager-client.vercel.app/kakao")
                     .build().toUriString());
         }
 
@@ -65,7 +64,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     private String makeRedirectUrl(String token) {
         /*return UriComponentsBuilder.fromUriString("http://www.alittlevanilla.kro.kr/oauth2/redirect/"+token)
                 .build().toUriString();*/
-        return UriComponentsBuilder.fromUriString("http://www.서버주소.co.kr/oauth2/redirect/"+token)
+        return UriComponentsBuilder.fromUriString("https://rolling-pager-client.vercel.app/kakao"+token)
                 .build().toUriString();
     }
 }

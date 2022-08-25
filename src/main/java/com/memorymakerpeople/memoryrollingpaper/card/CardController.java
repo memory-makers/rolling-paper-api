@@ -21,11 +21,12 @@ public class CardController {
 
     @PostMapping
     @ApiOperation(value = "카드 생성", notes = "하나의 롤링페이퍼에 있는 카드를 생성 합니다.")
-    public CardResponseDto createCard(@RequestBody Card card, HttpServletRequest request, HttpServletResponse response){
+    public CardResponseDto createCard(@RequestBody Card card, @RequestBody String token){
+        System.out.println("token = " + token);
         return cardService.createCard(card);
     }
-
-/*    @PutMapping
+/*
+   @PutMapping
     @ApiOperation(value = "카드 수정", notes = "하나의 롤링페이퍼에 있는 카드를 수정 합니다. = 미구현")
     public CardResponseDto updateCard(Card card, HttpServletRequest request, HttpServletResponse response) {
         String loginId = SessionUtils.GetLoginId(request);

@@ -19,15 +19,10 @@ public class CardService {
 
     public CardResponseDto createCard(Card card) {
         CardResponseDto responseDto = new CardResponseDto();
-        responseDto.message = "Card Create";
-        if (cardRepository.save(card).equals(null)){
-            responseDto.statusCode = "fail";
-        }else{
-            responseDto.statusCode = "complete";
-        }
+        cardRepository.save(card);
         return responseDto;
     }
-
+    /*
     public CardResponseDto updateCard(Card card) {
         CardResponseDto responseDto = new CardResponseDto();
         responseDto.message = "Card Update";
@@ -48,5 +43,5 @@ public class CardService {
             responseDto.statusCode = "complete";
         }
         return responseDto;
-    }
+    }*/
 }

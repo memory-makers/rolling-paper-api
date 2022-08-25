@@ -18,7 +18,7 @@ import java.util.List;
 @Api(tags = {"스티커 관리 API"})
 public class StickerController {
 
-    @Autowired
+    /*@Autowired
     private final StickerService stickerService;
 
     @PostMapping
@@ -49,5 +49,5 @@ public class StickerController {
     @ApiOperation(value = "스티커 삭제", notes = "stickerId를 기준으로 스티커를 삭제합니다.")
     public StickerResponseDto deleteSticker(StickerRequestDto stickerRequestDto, HttpServletRequest request){
         return stickerService.deleteSticker(stickerRequestDto);
-    }
+    }*/
 }

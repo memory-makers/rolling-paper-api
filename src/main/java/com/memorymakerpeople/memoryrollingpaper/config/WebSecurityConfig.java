@@ -73,7 +73,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.OPTIONS).permitAll() // preflight 대응
 //                .antMatchers("/product/create").hasAuthority("SELLER")
 
-                .antMatchers("/product/**", "/member/**", "/auth/**", "/order/**", "/").permitAll()
+                .antMatchers("/product/**", "/member/**", "/auth/**", "/order/**", "/login/**", "/").permitAll()
 
                 .anyRequest().authenticated().and()
 

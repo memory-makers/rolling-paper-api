@@ -19,7 +19,7 @@ import java.util.UUID;
 @Api(tags = {"롤링페이퍼 관리 API"})
 public class PaperController {
 
-    @Autowired
+    /*@Autowired
     private PaperService paperService;
 
     @PostMapping
@@ -88,5 +88,5 @@ public class PaperController {
         }
 
         return paperService.deletePaper(paper);
-    }
+    }*/
 }

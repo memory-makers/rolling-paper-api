@@ -1,6 +1,5 @@
 package com.memorymakerpeople.memoryrollingpaper.member;
 
-import com.memorymakerpeople.memoryrollingpaper.dto.DefaultResponseDto;
 import com.memorymakerpeople.memoryrollingpaper.member.model.Member;
 import com.memorymakerpeople.memoryrollingpaper.member.model.MemberRequestDto;
 import com.memorymakerpeople.memoryrollingpaper.member.model.MemberResponseDto;
@@ -21,7 +20,7 @@ import javax.servlet.http.HttpSession;
 @RequestMapping("/member")
 public class MemberController {
 
-    @Autowired
+    /*@Autowired
     private MemberService memberService;
 
     @ApiOperation(value = "카카오 회원 로그인/회원가입", notes = "카카오에서 발급하는 id를 사용해 로그인을 합니다. 만약 기존 회원이 아니라면 추가(회원가입) 합니다.")
@@ -79,5 +78,5 @@ public class MemberController {
             session.setMaxInactiveInterval(1800); // 1800초
         }
         return memberResponseDto;
-    }
+    }*/
 }
