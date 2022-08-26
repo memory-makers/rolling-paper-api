@@ -19,10 +19,10 @@ public class UserLoginRes extends User {
     String email;
     String nickname;
 
-    public UserLoginRes(BigInteger idx, String username, String password, String email, String nickname, Collection<?
+    public UserLoginRes(BigInteger id, String username, String password, String email, String nickname, Collection<?
             extends GrantedAuthority> authorities) {
         super(username, password, authorities);
-        this.id = idx;
+        this.id = id;
         this.username = username;
         this.email = email;
         this.nickname = nickname;

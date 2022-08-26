@@ -1,7 +1,8 @@
 package com.memorymakerpeople.memoryrollingpaper.card;
 
 import com.memorymakerpeople.memoryrollingpaper.card.model.Card;
-import com.memorymakerpeople.memoryrollingpaper.card.model.CardResponseDto;
+import com.memorymakerpeople.memoryrollingpaper.card.model.postCardResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,10 +18,8 @@ public class CardService {
         return cardRepository.findByPaperId(paperId);
     }
 
-    public CardResponseDto createCard(Card card) {
-        CardResponseDto responseDto = new CardResponseDto();
-        cardRepository.save(card);
-        return responseDto;
+    public postCardResponse createCard(Card card) {
+        return new postCardResponse(cardRepository.save(card), 1);
     }
     /*
     public CardResponseDto updateCard(Card card) {

@@ -2,37 +2,29 @@ package com.memorymakerpeople.memoryrollingpaper.paper;
 
 import com.memorymakerpeople.memoryrollingpaper.card.CardRepository;
 import com.memorymakerpeople.memoryrollingpaper.paper.model.Paper;
-import com.memorymakerpeople.memoryrollingpaper.paper.model.PaperRequestDto;
-import com.memorymakerpeople.memoryrollingpaper.paper.model.PaperResponseDto;
+import com.memorymakerpeople.memoryrollingpaper.paper.model.postPaperResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
 import java.util.List;
 
 @Service
 public class PaperService {
 
-    /*@Autowired
+    @Autowired
     private PaperRepository paperRepository;
 
     @Autowired
     private CardRepository cardRepository;
 
-    public PaperResponseDto createPaper(Paper paper) {
-        PaperResponseDto result = new PaperResponseDto();
-        Paper save = paperRepository.save(paper);
-        result.message = "Create Paper";
-        if (save == null){
-            result.statusCode = "fail";
-        }else{
-            result.statusCode = "complete";
-        }
-
-        return result;
+    public postPaperResponse createPaper(Paper paper, BigInteger id) {
+        paper.setUserId(id);
+        return new postPaperResponse(paperRepository.save(paper),1);
     }
 
-    public List<Paper> selectPaper(Paper paper){
-        return paperRepository.findByUserId(paper.getUserId());
+    public List<Paper> selectPaper(BigInteger id){
+        return paperRepository.findByUserId(id);
     }
 
     public PaperResponseDto selectOnePaper(PaperRequestDto paper){
@@ -74,5 +66,5 @@ public class PaperService {
         }
 
         return result;
-    }*/
+    }
 }
