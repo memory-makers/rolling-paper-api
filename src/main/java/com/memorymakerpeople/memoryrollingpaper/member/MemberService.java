@@ -1,12 +1,11 @@
 package com.memorymakerpeople.memoryrollingpaper.member;
 
+import com.memorymakerpeople.memoryrollingpaper.authLogin.UserLoginRes;
+import com.memorymakerpeople.memoryrollingpaper.config.BaseResponseStatus;
 import com.memorymakerpeople.memoryrollingpaper.member.model.Member;
-import com.memorymakerpeople.memoryrollingpaper.member.model.MemberRequestDto;
-import com.memorymakerpeople.memoryrollingpaper.member.model.MemberResponseDto;
+import com.memorymakerpeople.memoryrollingpaper.member.model.PutMemberRes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class MemberService {
@@ -14,7 +13,7 @@ public class MemberService {
     @Autowired
     private MemberRepository memberRepository;
 
-    //회원가입
+    /*//회원가입
     public MemberResponseDto joinUser(MemberRequestDto memberRequest) {
         Member member = new Member();
         MemberResponseDto result = new MemberResponseDto();
@@ -41,17 +40,11 @@ public class MemberService {
 
     public Optional<Member> isUser(MemberRequestDto memberRequest){
         return memberRepository.findByUsername(memberRequest.getUsername());
-    }
+    }*/
 
-    public MemberResponseDto updateNickname(Member memberRequestDto) {
-        MemberResponseDto result = new MemberResponseDto();
-        result.setMember(memberRepository.save(memberRequestDto));
-        if (result.getMember().getNickname() == null){
-            result.statusCode = "fail";
-        }else{
-            result.statusCode = "complete";
-        }
-        result.message = "nickname update";
-        return  result;
+    public PutMemberRes updateNickname(UserLoginRes userLoginRes, String nickname) {
+        Member member = memberRepository.findByEmail(userLoginRes.getEmail());
+        member.setNickname(nickname);
+        return new PutMemberRes(memberRepository.save(member), BaseResponseStatus.SUCCESS);
     }
 }

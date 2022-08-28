@@ -1,6 +1,6 @@
 package com.memorymakerpeople.memoryrollingpaper.paper.model;
 
-import com.memorymakerpeople.memoryrollingpaper.card.model.Card;
+import com.memorymakerpeople.memoryrollingpaper.config.BaseResponseStatus;
 import lombok.*;
 
 @Getter
@@ -8,8 +8,8 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class postPaperResponse {
+public class PostPaperRes {
     private Paper paper;
-    private Integer status;
+    private BaseResponseStatus status;
 
 }

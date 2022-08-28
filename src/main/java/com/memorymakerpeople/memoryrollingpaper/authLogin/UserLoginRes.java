@@ -12,20 +12,16 @@ import java.util.List;
 
 @Getter
 @Setter
-
 public class UserLoginRes extends User {
     BigInteger id;
-    String username;
     String email;
     String nickname;
 
-    public UserLoginRes(BigInteger id, String username, String password, String email, String nickname, Collection<?
+    public UserLoginRes(BigInteger id, String username, String password, String nickname, Collection<?
             extends GrantedAuthority> authorities) {
         super(username, password, authorities);
         this.id = id;
-        this.username = username;
-        this.email = email;
+        this.email = username;
         this.nickname = nickname;
     }
-
 }

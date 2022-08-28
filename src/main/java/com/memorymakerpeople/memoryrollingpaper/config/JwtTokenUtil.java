@@ -2,6 +2,7 @@ package com.memorymakerpeople.memoryrollingpaper.config;
 
 import com.memorymakerpeople.memoryrollingpaper.authLogin.UserLoginRes;
 import io.jsonwebtoken.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -13,6 +14,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 @Component
+@Slf4j
 public class JwtTokenUtil implements Serializable {
     private static final long serialVersionUID = -2550185165626007488L;
     public static final long JWT_TOKEN_VALIDITY = 1 * 60 * 60;
@@ -21,7 +23,9 @@ public class JwtTokenUtil implements Serializable {
 
     //jwt 토큰에서 사용자 이름 검색.
     public String getUsernameFromToken(String token) {
-        return getClaimFromToken(token, Claims::getSubject);
+        log.info("token = {}", token);
+        log.info("getClaimFromToken(token, Claims::getSubject) = {}", getClaimFromToken(token, Claims::getSubject));
+        return getClaimFromToken(token, Claims::getSubject); //왜안나옴 ? ;ㅁ;
     }
 
     //jwt 토큰에서 만료 날짜 검색.
@@ -31,6 +35,7 @@ public class JwtTokenUtil implements Serializable {
 
     public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = getAllClaimsFromToken(token);
+        log.info("claims = {}", claims);
         return claimsResolver.apply(claims);
     }
 
@@ -54,7 +59,7 @@ public class JwtTokenUtil implements Serializable {
         claims.put("id", userLoginRes.getId());
         claims.put("username", userLoginRes.getUsername());
         claims.put("nickname", userLoginRes.getNickname());
-        return doGenerateToken(claims, userLoginRes.getEmail());
+        return doGenerateToken(claims, userLoginRes.getUsername());
     }
 
     //Jwt 생성.

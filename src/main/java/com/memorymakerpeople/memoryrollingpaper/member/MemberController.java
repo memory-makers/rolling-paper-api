@@ -1,29 +1,24 @@
 package com.memorymakerpeople.memoryrollingpaper.member;
 
-import com.memorymakerpeople.memoryrollingpaper.member.model.Member;
-import com.memorymakerpeople.memoryrollingpaper.member.model.MemberRequestDto;
-import com.memorymakerpeople.memoryrollingpaper.member.model.MemberResponseDto;
-import com.memorymakerpeople.memoryrollingpaper.util.SessionConstants;
-import com.memorymakerpeople.memoryrollingpaper.util.SessionUtils;
+import com.memorymakerpeople.memoryrollingpaper.authLogin.UserLoginRes;
+import com.memorymakerpeople.memoryrollingpaper.config.BaseResponse;
+import com.memorymakerpeople.memoryrollingpaper.member.model.PutMemberReq;
+import com.memorymakerpeople.memoryrollingpaper.member.model.PutMemberRes;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 @RestController
 @Api(tags = {"회원관리 API"})
-@RequestMapping("/member")
+@RequestMapping("/members")
 public class MemberController {
 
-    /*@Autowired
+    @Autowired
     private MemberService memberService;
 
-    @ApiOperation(value = "카카오 회원 로그인/회원가입", notes = "카카오에서 발급하는 id를 사용해 로그인을 합니다. 만약 기존 회원이 아니라면 추가(회원가입) 합니다.")
+    /*@ApiOperation(value = "카카오 회원 로그인/회원가입", notes = "카카오에서 발급하는 id를 사용해 로그인을 합니다. 만약 기존 회원이 아니라면 추가(회원가입) 합니다.")
     @PostMapping("/login")
     public MemberResponseDto register(@RequestBody MemberRequestDto memberRequestDto, HttpServletRequest request, HttpServletResponse response) {
         MemberResponseDto result = memberService.joinUser(memberRequestDto);
@@ -53,30 +48,11 @@ public class MemberController {
         }
 
         return result;
-    }
+    }*/
 
     @ApiOperation(value = "닉네임 설정", notes = "닉네임 설정, username이나 id중에 식별자와 변경할 nickname을 파라미터로 전달")
     @PutMapping
-    public MemberResponseDto setNickname(HttpServletRequest request,@RequestBody Member memberRequestDto) {
-        System.out.println("MemberController.setNickname");
-        System.out.println("request = " + request);
-        System.out.println("SessionMember = " + SessionUtils.GetSessionMember(request));
-        String loginId = SessionUtils.GetLoginId(request);
-        if (loginId.isEmpty()){
-            MemberResponseDto result = new MemberResponseDto();
-            result.statusCode = "fail";
-            result.message = "not found user";
-            return result;
-        }
-        Member sessionMember = SessionUtils.GetSessionMember(request);
-        sessionMember.setNickname(memberRequestDto.getNickname());
-        MemberResponseDto memberResponseDto = memberService.updateNickname(sessionMember);
-
-        if(memberResponseDto.statusCode.equals("complete")) { //닉네임 변경 완료시 session에 담긴 login member도 update
-            HttpSession session = request.getSession();                         // 세션이 있으면 있는 세션 반환, 없으면 신규 세션을 생성하여 반환
-            session.setAttribute(SessionConstants.LOGIN_MEMBER, memberResponseDto.getMember());   // 세션에 로그인 회원 정보 보관
-            session.setMaxInactiveInterval(1800); // 1800초
-        }
-        return memberResponseDto;
-    }*/
+    public BaseResponse<PutMemberRes> setNickname(@AuthenticationPrincipal UserLoginRes userLoginRes, @RequestBody PutMemberReq memberReq) {
+        return new BaseResponse<>(memberService.updateNickname(userLoginRes, memberReq.getNickname()));
+    }
 }

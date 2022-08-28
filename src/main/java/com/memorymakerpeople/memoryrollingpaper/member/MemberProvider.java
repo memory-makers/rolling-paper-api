@@ -19,7 +19,6 @@ public class MemberProvider {
             System.out.println("MemberProvider...");
             return memberDao.findByEmail(email);
         } catch (Exception exception){
-
             throw exception;
         }
     }

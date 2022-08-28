@@ -7,12 +7,10 @@ import lombok.*;
 @NoArgsConstructor
 @ToString
 public class PostMemberReq {
-    private String username;
     private String email;
     private String password;
 
-    public PostMemberReq(String id, String email) {
-        this.username = id;
+    public PostMemberReq(String email) {
         this.email = email;
     }
 }

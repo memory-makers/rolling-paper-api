@@ -4,6 +4,7 @@ import com.memorymakerpeople.memoryrollingpaper.authLogin.UserLoginRes;
 import com.memorymakerpeople.memoryrollingpaper.member.model.Authority;
 import com.memorymakerpeople.memoryrollingpaper.member.model.PostMemberReq;
 import com.memorymakerpeople.memoryrollingpaper.member.model.PostMemberRes;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 @Repository
+@Slf4j
 public class MemberDao {
     private JdbcTemplate jdbcTemplate;
 
@@ -26,8 +28,8 @@ public class MemberDao {
 
     public PostMemberRes createMember(PostMemberReq postMemberReq) {
 
-        String createMemberQuery = "insert into tbl_user (email, password, username ) VALUES (?, ?, ?)";
-        Object[] createMemberParams = new Object[]{postMemberReq.getEmail(), "kakao", postMemberReq.getUsername()
+        String createMemberQuery = "insert into tbl_user (email, password ) VALUES (?, ?)";
+        Object[] createMemberParams = new Object[]{postMemberReq.getEmail(), "kakao"
         };
         this.jdbcTemplate.update(createMemberQuery, createMemberParams);
 
@@ -42,15 +44,15 @@ public class MemberDao {
 
 
     public UserLoginRes findByEmail(String email) {
+        log.info("email = {}", email);
         String getEmailQuery = "SELECT * FROM tbl_user LEFT OUTER JOIN authority on tbl_user.id=authority.member_idx WHERE email=?";
 
         return this.jdbcTemplate.queryForObject(getEmailQuery
                 , (rs, rowNum) -> new UserLoginRes(
                         rs.getObject("id", BigInteger.class),
-                        rs.getString("username"),
                         rs.getString("email"),
-                        rs.getString("nickname"),
                         rs.getString("password"),
+                        rs.getString("nickname"),
                         Arrays.asList(new SimpleGrantedAuthority(Authority.values()[rs.getObject("role", int.class)].toString()))
                 ), email);
     }
@@ -69,7 +71,6 @@ public class MemberDao {
             UserLoginRes userLoginRes = this.jdbcTemplate.queryForObject(findEmailQuery
                     , (rs, rowNum) -> new UserLoginRes(
                             rs.getObject("id", BigInteger.class),
-                            rs.getString("username"),
                             rs.getString("email"),
                             rs.getString("nickname"),
                             rs.getString("password"),

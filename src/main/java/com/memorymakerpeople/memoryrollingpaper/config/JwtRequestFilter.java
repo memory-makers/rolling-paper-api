@@ -2,6 +2,7 @@ package com.memorymakerpeople.memoryrollingpaper.config;
 
 import com.memorymakerpeople.memoryrollingpaper.authLogin.JwtUserDetailsService;
 import io.jsonwebtoken.ExpiredJwtException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
+@Slf4j
 public class JwtRequestFilter extends OncePerRequestFilter {
 
     @Autowired
@@ -33,15 +35,17 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
         String username = null;
         String jwtToken = null;
-
+        log.info("requestTokenHeader = {}", requestTokenHeader);
         if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
+            log.info("========================================= jwtToken = {}", requestTokenHeader.substring(7));
             jwtToken = requestTokenHeader.substring(7);
             try {
                 username = jwtTokenUtil.getUsernameFromToken(jwtToken);
+                log.info("username = {}", username);
             } catch (IllegalArgumentException e) {
-                System.out.println("Unable to get JWT Token");
+                log.error("Unable to get JWT Token");
             } catch (ExpiredJwtException e) {
-                System.out.println("JWT Token has expired");
+                log.error("JWT Token has expired");
             }
         } else {
             logger.warn("JWT Token does not begin with Bearer String");
@@ -52,8 +56,10 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
             UserDetails userDetails = this.jwtUserDetailsService.loadUserByUsername(username);
 
+            log.info("userDetails = {}", userDetails);
             // 토큰이 유효한 경우.. 수동으로 인증을 설정하도록 Spring Security를 구성
             if (jwtTokenUtil.validateToken(jwtToken, userDetails)) {
+                log.info("Token Validate Complete");
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities());
                 usernamePasswordAuthenticationToken

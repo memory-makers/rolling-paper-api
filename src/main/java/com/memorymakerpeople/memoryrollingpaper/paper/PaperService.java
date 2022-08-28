@@ -1,13 +1,14 @@
 package com.memorymakerpeople.memoryrollingpaper.paper;
 
 import com.memorymakerpeople.memoryrollingpaper.card.CardRepository;
-import com.memorymakerpeople.memoryrollingpaper.paper.model.Paper;
-import com.memorymakerpeople.memoryrollingpaper.paper.model.postPaperResponse;
+import com.memorymakerpeople.memoryrollingpaper.config.BaseResponseStatus;
+import com.memorymakerpeople.memoryrollingpaper.paper.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PaperService {
@@ -18,43 +19,39 @@ public class PaperService {
     @Autowired
     private CardRepository cardRepository;
 
-    public postPaperResponse createPaper(Paper paper, BigInteger id) {
-        paper.setUserId(id);
-        return new postPaperResponse(paperRepository.save(paper),1);
+    @Autowired
+    private PaperDao paperDao;
+
+
+
+    public PostPaperRes createPaper(PostPaperReq postPaperReq, String id) {
+        postPaperReq.getPaper().setUserId(id);
+        return new PostPaperRes(paperRepository.save(postPaperReq.getPaper()), BaseResponseStatus.SUCCESS);
     }
 
-    public List<Paper> selectPaper(BigInteger id){
+    public List<Paper> selectPaper(String id){
         return paperRepository.findByUserId(id);
     }
 
-    public PaperResponseDto selectOnePaper(PaperRequestDto paper){
-        PaperResponseDto paperResponseDto = new PaperResponseDto();
-        String paperId = String.valueOf(paper.getPaperId());
-        paperResponseDto.setCardList(cardRepository.findByPaperId(paperId));
-        *//*paperResponseDto.setUserId(paper.getUserId());
-        paperResponseDto.setPaperUrl(paper.getPaperUrl());
-        paperResponseDto.setPaperTitle(paper.getPaperTitle());
-        paperResponseDto.setPaperId(paper.getPaperId());
-        paperResponseDto.setDueDt(paper.getDueDt());
-        paperResponseDto.setTheme(paper.getTheme());
-        paperResponseDto.setOpenStatus(paper.getOpenStatus());*//*
-        return paperResponseDto;
+   public GetPaperRes selectOnePaper(BigInteger paperId){
+       Optional<Paper> paper = paperRepository.findByPaperId(paperId);
+       if (paper.isPresent()) {
+           return new GetPaperRes(paper.get(), BaseResponseStatus.SUCCESS);
+       }
+
+       return new GetPaperRes(null, BaseResponseStatus.EMPTY_PAPER_ID);
     }
 
-    public PaperResponseDto updatePaper(Paper paper) {
-        PaperResponseDto result = new PaperResponseDto();
-        Paper save = paperRepository.save(paper);
-        result.message = "Update Paper";
-        if (save == null){
-            result.statusCode = "fail";
-        }else{
-            result.statusCode = "complete";
+    public PutPaperRes updatePaper(PutPaperReq putPaperReq, String email) {
+        //생성한 사람이 아닌 사람이 수정을 시도하는 경우
+        if(paperDao.checkEmailAndPaperId(email, putPaperReq.getPaper().getPaperId())) {
+            return new PutPaperRes(paperRepository.save(putPaperReq.getPaper()), BaseResponseStatus.SUCCESS);
         }
 
-        return result;
+        return new PutPaperRes(null, BaseResponseStatus.FAILED_TO_PAPER_UPDATE);
     }
 
-    public PaperResponseDto deletePaper(Paper paper) {
+    /*public PaperResponseDto deletePaper(Paper paper) {
         PaperResponseDto result = new PaperResponseDto();
         paper.setDeleteYn("Y");
         Paper save = paperRepository.save(paper);
@@ -66,5 +63,5 @@ public class PaperService {
         }
 
         return result;
-    }
+    }*/
 }

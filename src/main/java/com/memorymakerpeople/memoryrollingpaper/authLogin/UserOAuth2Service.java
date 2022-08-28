@@ -33,25 +33,15 @@ public class UserOAuth2Service extends DefaultOAuth2UserService {
         log.info("attributes :: " + attributes);
 
 //        동의철회시 필요한 AccessToken 값.
-        System.out.println("getAccessToken: "+userRequest.getAccessToken().getTokenValue());
+        log.info("getAccessToken: "+userRequest.getAccessToken().getTokenValue());
 
-        Map<String, Object> kakao_account = (Map<String, Object>) attributes.get("kakao_account");
-        System.out.println("kakao_account!!!! = " + kakao_account);
+            Map<String, Object> kakao_account = (Map<String, Object>) attributes.get("kakao_account");
         String email = (String) kakao_account.get("email");
-        System.out.println("email = " + email);
 
-        String kakao_id = attributes.get("id").toString();
-        System.out.println("id = " + kakao_id);
-
-        Member member = Member.builder()
-                .email(email)
-                .username(kakao_id) // 여기 수정해야됨.
-                .build();
-        log.info("member :: " + member);
         if (memberDao.checkEmail(email) == 0) {
-            memberDao.createMember(new PostMemberReq(kakao_id, email));
+            memberDao.createMember(new PostMemberReq(email));
         } else {
-            System.out.println("가입한적 있음.");
+            log.info("가입된 유저");
         }
         return new DefaultOAuth2User(Collections.singleton(new SimpleGrantedAuthority("ROLE_MEMBER")), attributes, "id");
     }

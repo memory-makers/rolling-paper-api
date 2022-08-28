@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/card")
+@RequestMapping("/cards")
 @Api(tags = {"카드 관리 API"})
 public class CardController {
 

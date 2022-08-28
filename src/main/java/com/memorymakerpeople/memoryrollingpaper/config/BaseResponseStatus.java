@@ -20,10 +20,11 @@ public enum BaseResponseStatus {
     // [POST] /users
     POST_USER_INFO_NULL(false, 2041, "빠진 가입 정보가 없는지 확인해주세요."),
 
-    // [GET] /products
-    EMPTY_IDX(false, 2050, "IDX 값을 입력해주세요."),
-    EMPTY_OFFSET(false, 2051, "Offset(페이지번호)를 입력해주세요."),
+    // [GET] /Paper
+    EMPTY_PAPER_ID(false, 2050, "PaperId 값을 입력해주세요."),
 
+    // [Put] /Paper
+    FAILED_TO_PAPER_UPDATE(false, 2051, "본인의 게시물이 아니면 수정할 수 없습니다."),
 
     //   3000 : Response 오류
     // Common

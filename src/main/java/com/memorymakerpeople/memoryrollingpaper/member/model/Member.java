@@ -20,16 +20,13 @@ public class Member implements Serializable {
     @NotNull
     private Long id;
     @NotNull
-    private String username;//아이디
-    @NotNull
     private String email;
     private String nickname;
     private String password;
 
     @Builder
-    public Member(String username, String email, String password) {
-        this.username = username;
+    public Member(String email, String nickname) {
         this.email = email;
-        this.password = password;
+        this.nickname = nickname;
     }
 }
