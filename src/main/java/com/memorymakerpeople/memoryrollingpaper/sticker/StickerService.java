@@ -1,8 +1,7 @@
 package com.memorymakerpeople.memoryrollingpaper.sticker;
 
-import com.memorymakerpeople.memoryrollingpaper.sticker.model.Sticker;
-import com.memorymakerpeople.memoryrollingpaper.sticker.model.StickerRequestDto;
-import com.memorymakerpeople.memoryrollingpaper.sticker.model.StickerResponseDto;
+import com.memorymakerpeople.memoryrollingpaper.config.BaseResponseStatus;
+import com.memorymakerpeople.memoryrollingpaper.sticker.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,85 +11,46 @@ import java.util.Optional;
 @Service
 public class StickerService {
 
-    /*@Autowired
+    @Autowired
     private StickerRepository stickerRepository;
 
-    public StickerResponseDto selectSticker(StickerRequestDto stickerRequestDto) {
-        Optional<Sticker> byStickerId = stickerRepository.findByStickerId(stickerRequestDto.getSticker().getStickerId());
-        StickerResponseDto result = new StickerResponseDto();
-        if (byStickerId.isPresent()){
-            result.setSticker(byStickerId.get());
+    public PostStickerRes createSticker(PostStickerReq postStickerReq) {
+        Sticker sticker = Sticker.builder()
+                .stickerSize(postStickerReq.getStickerSize())
+                .stickerId(postStickerReq.getStickerId())
+                .paperId(postStickerReq.getPaperId())
+                .rotate(postStickerReq.getRotate())
+                .scale(postStickerReq.getScale())
+                .type(postStickerReq.getType())
+                .x(postStickerReq.getX())
+                .y(postStickerReq.getY())
+                .build();
+        //stickerRepository.save(postStickerReq.getSticker())
+        return new PostStickerRes(stickerRepository.save(sticker), BaseResponseStatus.SUCCESS);
+    }
+
+    public GetStickerListRes selectStickerList(int paperId) {
+        List<Sticker> result = stickerRepository.findByPaperId(paperId);
+        if(!result.isEmpty()) {
+            return new GetStickerListRes(result, BaseResponseStatus.SUCCESS);
         }
-        return result;
+        return new GetStickerListRes(null, BaseResponseStatus.FAILED_TO_LOAD_STICKERS);
     }
 
-    public StickerResponseDto createSticker(StickerRequestDto stickerRequestDto) {
-        StickerResponseDto result = new StickerResponseDto();
-        result.setSticker(stickerRepository.save(stickerRequestDto.getSticker()));
-        if(result.getSticker() != null){
-            result.statusCode = "complete";
-        }else{
-            result.statusCode = "fail";
+    public GetStickerRes selectSticker(int stickerId) {
+        Optional<Sticker> sticker = stickerRepository.findByStickerId(stickerId);
+        if(sticker.isPresent()) {
+            return new GetStickerRes(sticker.get(), BaseResponseStatus.SUCCESS);
         }
-        result.message = "Sticker Create";
-        return result;
+        return new GetStickerRes(null, BaseResponseStatus.FAILED_TO_LOAD_STICKER);
     }
 
-    public List<Sticker> selectStickerList(StickerRequestDto stickerRequestDto) {
-        return stickerRepository.findByPaperId(stickerRequestDto.getSticker().getPaperId());
-
+    public PutStickerRes updateSticker(PutStickerReq putStickerReq) {
+        return new PutStickerRes(stickerRepository.save(putStickerReq.getSticker()),BaseResponseStatus.SUCCESS);
     }
 
-    public StickerResponseDto updateSticker(StickerRequestDto stickerRequestDto) {
-        StickerResponseDto result = new StickerResponseDto();
-        result.setSticker(stickerRepository.save(stickerRequestDto.getSticker()));
-        if(result.getSticker().getStickerId() > 0){
-            result.statusCode = "complete";
-        }else{
-            result.statusCode = "fail";
-        }
-        result.message = "Sticker Update";
-        return result;
+    public DeleteStickerRes deleteSticker(int stickerId) {
+        stickerRepository.deleteById(stickerId);
+        return new DeleteStickerRes(BaseResponseStatus.SUCCESS);
     }
-
-    public StickerResponseDto deleteSticker(StickerRequestDto stickerRequestDto) {
-        StickerResponseDto result = new StickerResponseDto();
-        stickerRepository.delete(stickerRequestDto.getSticker());
-        result.statusCode = "complete";
-        result.message = "Sticker delete";
-        return result;
-    }
-
-    public CardResponseDto createCard(Card card) {
-        CardResponseDto responseDto = new CardResponseDto();
-        responseDto.message = "Card Create";
-        if (cardRepository.save(card).equals(null)){
-            responseDto.statusCode = "fail";
-        }else{
-            responseDto.statusCode = "complete";
-        }
-        return responseDto;
-    }
-
-    public CardResponseDto updateCard(Card card) {
-        CardResponseDto responseDto = new CardResponseDto();
-        responseDto.message = "Card Update";
-        if (cardRepository.findById(card.getCardId()).isEmpty()){
-            responseDto.statusCode = "fail";
-        }else{
-            responseDto.statusCode = "complete";
-        }
-        return responseDto;
-    }
-
-    public CardResponseDto deleteCard(Card card) {
-        CardResponseDto responseDto = new CardResponseDto();
-        responseDto.message = "Card Delete";
-        if (cardRepository.findById(card.getCardId()).isEmpty()){
-            responseDto.statusCode = "fail";
-        }else{
-            responseDto.statusCode = "complete";
-        }
-        return responseDto;
-    }*/
 }

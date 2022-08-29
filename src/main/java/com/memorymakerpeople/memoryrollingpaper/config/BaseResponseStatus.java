@@ -20,11 +20,15 @@ public enum BaseResponseStatus {
     // [POST] /users
     POST_USER_INFO_NULL(false, 2041, "빠진 가입 정보가 없는지 확인해주세요."),
 
-    // [GET] /Paper
+    // [GET] /Papers
     EMPTY_PAPER_ID(false, 2050, "PaperId 값을 입력해주세요."),
 
-    // [Put] /Paper
+    // [Put] /Papers
     FAILED_TO_PAPER_UPDATE(false, 2051, "본인의 게시물이 아니면 수정할 수 없습니다."),
+
+    // [GET] /Stickers
+    FAILED_TO_LOAD_STICKERS(false, 2100, "잘못된 PaperId 입니다."),
+    FAILED_TO_LOAD_STICKER(false, 2101, "잘못된 StickerId 입니다."),
 
     //   3000 : Response 오류
     // Common
