@@ -3,6 +3,7 @@ package com.memorymakerpeople.memoryrollingpaper.config;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.memorymakerpeople.memoryrollingpaper.authLogin.UserLoginRes;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -27,7 +28,7 @@ public class BaseResponse<T> {
         this.result = result;
     }
 
-    public BaseResponse(BaseResponseStatus status) {
+    public BaseResponse(UserLoginRes userLoginRes, BaseResponseStatus status) {
         this.isSuccess = status.isSuccess();
         this.message = status.getMessage();
         this.code = status.getCode();

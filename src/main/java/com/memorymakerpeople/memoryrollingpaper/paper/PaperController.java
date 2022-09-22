@@ -43,11 +43,18 @@ public class PaperController {
         return new BaseResponse<>(paperService.selectOnePaper(paperId));
     }
 
-    @PutMapping("/update")
+    @PutMapping()
     @ApiOperation(value = "롤링페이퍼 수정", notes = "롤링페이퍼를 수정합니다.")
     public BaseResponse<PutPaperRes> updatePaper(@RequestBody PutPaperReq putPaperReq, @AuthenticationPrincipal UserLoginRes userLoginRes){
         log.info("paper = {}", putPaperReq);
         return new BaseResponse<>(paperService.updatePaper(putPaperReq, userLoginRes.getEmail()));
+    }
+
+    @GetMapping("/url")
+    @ApiOperation(value = "paperId 조회", notes = "url을 이용해서 paperId를 조회합니다.")
+    public BaseResponse<GetpaperIdRes> findPaperId(@RequestParam String paperUrl){
+        log.info("paperUrl = {}", paperUrl);
+        return new BaseResponse<>(paperService.selectPaperId(paperUrl));
     }
     /*
     @PutMapping("/update/{paperId}")

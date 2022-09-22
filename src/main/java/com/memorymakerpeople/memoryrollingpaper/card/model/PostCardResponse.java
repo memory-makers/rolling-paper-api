@@ -1,5 +1,6 @@
 package com.memorymakerpeople.memoryrollingpaper.card.model;
 
+import com.memorymakerpeople.memoryrollingpaper.config.BaseResponseStatus;
 import lombok.*;
 
 @Getter
@@ -7,8 +8,8 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class postCardResponse {
+public class PostCardResponse {
     private Card card;
-    private Integer status;
+    private BaseResponseStatus status;
 
 }

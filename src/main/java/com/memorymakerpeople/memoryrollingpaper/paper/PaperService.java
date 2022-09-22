@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class PaperService {
@@ -25,7 +26,10 @@ public class PaperService {
 
 
     public PostPaperRes createPaper(PostPaperReq postPaperReq, String id) {
+        System.out.println("postPaperReq = " + postPaperReq);
+        System.out.println("id = " + id);
         postPaperReq.getPaper().setUserId(id);
+        postPaperReq.getPaper().setPaperUrl(UUID.randomUUID().toString());
         return new PostPaperRes(paperRepository.save(postPaperReq.getPaper()), BaseResponseStatus.SUCCESS);
     }
 
@@ -34,6 +38,7 @@ public class PaperService {
     }
 
    public GetPaperRes selectOnePaper(BigInteger paperId){
+       System.out.println("paperId = " + paperId);
        Optional<Paper> paper = paperRepository.findByPaperId(paperId);
        if (paper.isPresent()) {
            return new GetPaperRes(paper.get(), BaseResponseStatus.SUCCESS);
@@ -49,6 +54,11 @@ public class PaperService {
         }
 
         return new PutPaperRes(null, BaseResponseStatus.FAILED_TO_PAPER_UPDATE);
+    }
+
+    public GetpaperIdRes selectPaperId(String paperUrl) {
+        PaperIdMapping byPaperUrl = paperRepository.findByPaperUrl(paperUrl);
+        return new GetpaperIdRes(byPaperUrl.getPaperId(),BaseResponseStatus.SUCCESS);
     }
 
     /*public PaperResponseDto deletePaper(Paper paper) {

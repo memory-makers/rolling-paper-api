@@ -2,6 +2,7 @@ package com.memorymakerpeople.memoryrollingpaper.member.model;
 
 import com.sun.istack.NotNull;
 import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
@@ -11,6 +12,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 @Entity
+@DynamicInsert // null로 들어가야 하는 경우 대응(기본값)
 @DynamicUpdate // 변경한 필드만 대응
 @Table(name = "tbl_user")
 public class Member implements Serializable {

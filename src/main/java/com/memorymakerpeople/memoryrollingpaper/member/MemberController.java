@@ -2,17 +2,22 @@ package com.memorymakerpeople.memoryrollingpaper.member;
 
 import com.memorymakerpeople.memoryrollingpaper.authLogin.UserLoginRes;
 import com.memorymakerpeople.memoryrollingpaper.config.BaseResponse;
+import com.memorymakerpeople.memoryrollingpaper.config.BaseResponseStatus;
+import com.memorymakerpeople.memoryrollingpaper.member.model.GetMemberRes;
 import com.memorymakerpeople.memoryrollingpaper.member.model.PutMemberReq;
 import com.memorymakerpeople.memoryrollingpaper.member.model.PutMemberRes;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Api(tags = {"회원관리 API"})
 @RequestMapping("/members")
+@Slf4j
 public class MemberController {
 
     @Autowired
@@ -50,9 +55,28 @@ public class MemberController {
         return result;
     }*/
 
+    @ApiOperation(value = "사용자 정보 조회", notes = "현재 로그인된 사용자의 정보를 불러옵니다.")
+    @GetMapping
+    public BaseResponse<GetMemberRes> getLoginUser(@AuthenticationPrincipal UserLoginRes userLoginRes) {
+        log.info("UserLoginRes = {}", userLoginRes);
+        if (ObjectUtils.isEmpty(userLoginRes)) {
+            return new BaseResponse<GetMemberRes>(null, BaseResponseStatus.GET_USER_INFO_NULL);
+        }
+        return new BaseResponse<GetMemberRes>(userLoginRes, BaseResponseStatus.SUCCESS);
+    }
+
     @ApiOperation(value = "닉네임 설정", notes = "닉네임 설정, username이나 id중에 식별자와 변경할 nickname을 파라미터로 전달")
     @PutMapping
     public BaseResponse<PutMemberRes> setNickname(@AuthenticationPrincipal UserLoginRes userLoginRes, @RequestBody PutMemberReq memberReq) {
+        System.out.println("userLoginRes = " + userLoginRes);
+        System.out.println("memberReq = " + memberReq);
         return new BaseResponse<>(memberService.updateNickname(userLoginRes, memberReq.getNickname()));
+    }
+
+    @ApiOperation(value="사용자 닉네임 조회(레몬 전용)", notes = "레몬을 위해 작성한 사용자 닉네임 조회입니다.")
+    @GetMapping("/nickname")
+    public String getNickname(@AuthenticationPrincipal UserLoginRes loginRes) {
+        System.out.println("loginRes = " + loginRes);
+        return memberService.selectNickname(loginRes.getEmail());
     }
 }

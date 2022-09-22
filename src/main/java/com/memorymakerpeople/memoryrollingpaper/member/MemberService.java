@@ -6,6 +6,10 @@ import com.memorymakerpeople.memoryrollingpaper.member.model.Member;
 import com.memorymakerpeople.memoryrollingpaper.member.model.PutMemberRes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
+
+import java.math.BigInteger;
+import java.util.Optional;
 
 @Service
 public class MemberService {
@@ -43,8 +47,22 @@ public class MemberService {
     }*/
 
     public PutMemberRes updateNickname(UserLoginRes userLoginRes, String nickname) {
+        System.out.println("userLoginRes = " + userLoginRes);
+        System.out.println("nickname = " + nickname);
         Member member = memberRepository.findByEmail(userLoginRes.getEmail());
+        System.out.println("member = " + member);
         member.setNickname(nickname);
         return new PutMemberRes(memberRepository.save(member), BaseResponseStatus.SUCCESS);
+    }
+
+    public String selectNickname(String email) {
+        Member Member = memberRepository.findByEmail(email);
+
+        System.out.println("Member = " + Member);
+        if(!ObjectUtils.isEmpty(Member)) {
+            return Member.getNickname();
+        }
+
+        return null;
     }
 }

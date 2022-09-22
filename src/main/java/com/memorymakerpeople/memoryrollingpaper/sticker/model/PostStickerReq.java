@@ -8,7 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @ToString
 public class PostStickerReq {
-    private int stickerId;
+    private Long stickerId;
     private int stickerSize;
     private String type;
     private float rotate;
@@ -16,4 +16,5 @@ public class PostStickerReq {
     private float y;
     private float scale;
     private int paperId;
+    private String requestType;
 }

@@ -26,7 +26,7 @@ public class PaperDao {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-    public Boolean checkEmailAndPaperId(String email, int paperId) {
+    public Boolean checkEmailAndPaperId(String email, BigInteger paperId) {
         String checkEmailQuery = "select exists" +
                                     "(select p.paper_id " +
                                     "from tbl_paper p join tbl_user u" +

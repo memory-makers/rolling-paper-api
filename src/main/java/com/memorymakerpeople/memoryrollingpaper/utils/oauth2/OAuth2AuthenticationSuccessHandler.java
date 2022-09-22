@@ -44,7 +44,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         //토큰 생성
         String jwt = jwtTokenUtil.generateToken(userLoginRes);
         logger.info("jwt :: " + jwt);
-        String url = makeRedirectUrl(jwt);
+        String url = makeRedirectUrl(jwt, request);
 
         if (response.isCommitted()) {
             logger.debug("응답이 이미 커밋된 상태입니다. " + url + "로 리다이렉트하도록 바꿀 수 없습니다.");
@@ -54,10 +54,19 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     }
 
 
-    private String makeRedirectUrl(String token) {
+    private String makeRedirectUrl(String token, HttpServletRequest req) {
         /*return UriComponentsBuilder.fromUriString("http://www.alittlevanilla.kro.kr/oauth2/redirect/"+token)
                 .build().toUriString();*/
-        return UriComponentsBuilder.fromUriString("https://rolling-pager-client.vercel.app/kakao?token="+token)
+        /*return UriComponentsBuilder.fromUriString("https://rolling-pager-client.vercel.app/kakao?token="+token)
+                .build().toUriString();*/
+        String clientIp = getClientIp(req);
+        return UriComponentsBuilder.fromUriString("http://localhost:5173/kakao?token="+token)
                 .build().toUriString();
+    }
+
+    public static String getClientIp(HttpServletRequest req) {
+        String ip = req.getHeader("X-Forwarded-For");
+        if (ip == null) ip = req.getRemoteAddr();
+        return ip;
     }
 }

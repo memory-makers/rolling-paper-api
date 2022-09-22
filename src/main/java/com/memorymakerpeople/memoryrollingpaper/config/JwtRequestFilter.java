@@ -35,7 +35,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
         String username = null;
         String jwtToken = null;
-        log.info("requestTokenHeader = {}", requestTokenHeader);
+        //log.info("requestTokenHeader = {}", requestTokenHeader);
         if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
             log.info("========================================= jwtToken = {}", requestTokenHeader.substring(7));
             jwtToken = requestTokenHeader.substring(7);
@@ -48,7 +48,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 log.error("JWT Token has expired");
             }
         } else {
-            logger.warn("JWT Token does not begin with Bearer String");
+            //logger.warn("JWT Token does not begin with Bearer String");
         }
 
         // 토큰을 받으면 유효성을 검사.
