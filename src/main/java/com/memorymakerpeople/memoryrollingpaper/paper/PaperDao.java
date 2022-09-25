@@ -29,7 +29,7 @@ public class PaperDao {
     public Boolean checkEmailAndPaperId(String email, BigInteger paperId) {
         String checkEmailQuery = "select exists" +
                                     "(select p.paper_id " +
-                                    "from tbl_paper p join tbl_user u" +
+                                    "from tbl_paper p join tbl_user u " +
                                     "on p.user_id = u.email " +
                                     "where u.email = ? " +
                                     "AND p.paper_id = ?)";

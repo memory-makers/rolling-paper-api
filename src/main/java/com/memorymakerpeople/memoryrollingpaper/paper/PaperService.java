@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -34,7 +37,7 @@ public class PaperService {
     }
 
     public List<Paper> selectPaper(String id){
-        return paperRepository.findByUserId(id);
+        return paperRepository.findByUserIdAndDeleteYn(id, "N");
     }
 
    public GetPaperRes selectOnePaper(BigInteger paperId){
@@ -50,9 +53,18 @@ public class PaperService {
     public PutPaperRes updatePaper(PutPaperReq putPaperReq, String email) {
         //생성한 사람이 아닌 사람이 수정을 시도하는 경우
         if(paperDao.checkEmailAndPaperId(email, putPaperReq.getPaper().getPaperId())) {
+            Optional<Paper> paperOptional = paperRepository.findByPaperId(putPaperReq.getPaper().getPaperId());
+
+            if(paperOptional.isPresent()) {
+                Paper paper = paperOptional.get();
+                putPaperReq.getPaper().setCreatedAt(paper.getCreatedAt());
+                putPaperReq.getPaper().setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+                putPaperReq.getPaper().setDeleteYn(paper.getDeleteYn());
+                putPaperReq.getPaper().setOpenStatus(paper.getOpenStatus());
+                putPaperReq.getPaper().setUserId(paper.getUserId());
+            }
             return new PutPaperRes(paperRepository.save(putPaperReq.getPaper()), BaseResponseStatus.SUCCESS);
         }
-
         return new PutPaperRes(null, BaseResponseStatus.FAILED_TO_PAPER_UPDATE);
     }
 
@@ -61,17 +73,14 @@ public class PaperService {
         return new GetpaperIdRes(byPaperUrl.getPaperId(),BaseResponseStatus.SUCCESS);
     }
 
-    /*public PaperResponseDto deletePaper(Paper paper) {
-        PaperResponseDto result = new PaperResponseDto();
-        paper.setDeleteYn("Y");
-        Paper save = paperRepository.save(paper);
-        result.message = "Delete Paper";
-        if (save == null){
-            result.statusCode = "fail";
-        }else{
-            result.statusCode = "complete";
+    public DeletePaperRes deletePaper(BigInteger paperId, String userId) {
+        //인증 해줘야함
+        Optional<Paper> paperOptional = paperRepository.findByPaperId(paperId);
+
+        if(paperOptional.isPresent()) {
+            paperOptional.get().setDeleteYn("Y");
         }
 
-        return result;
-    }*/
+        return new DeletePaperRes(paperRepository.save(paperOptional.get()), BaseResponseStatus.SUCCESS);
+    }
 }

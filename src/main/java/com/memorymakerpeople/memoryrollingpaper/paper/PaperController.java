@@ -56,10 +56,12 @@ public class PaperController {
         log.info("paperUrl = {}", paperUrl);
         return new BaseResponse<>(paperService.selectPaperId(paperUrl));
     }
-    /*
-    @PutMapping("/update/{paperId}")
+
+    @DeleteMapping("/{paperId}")
     @ApiOperation(value = "롤링페이퍼 삭제", notes = "롤링페이퍼를 삭제합니다.")
-    public BaseResponse<PaperResponseDto> deletePaper(@RequestBody Paper paper, HttpServletRequest request, HttpServletResponse response){
-        return paperService.deletePaper(paper);
-    }*/
+    public BaseResponse<DeletePaperRes> deletePaper(@AuthenticationPrincipal UserLoginRes userLoginRes, @PathVariable BigInteger paperId){
+        log.info("userLoginRes = {}", userLoginRes);
+        log.info("paperId = {}", paperId);
+        return new BaseResponse<>(paperService.deletePaper(paperId, userLoginRes.getEmail()));
+    }
 }
