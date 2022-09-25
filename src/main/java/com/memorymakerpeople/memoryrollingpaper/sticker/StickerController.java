@@ -5,6 +5,7 @@ import com.memorymakerpeople.memoryrollingpaper.sticker.model.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/stickers")
 @Api(tags = {"스티커 관리 API"})
+@Slf4j
 public class StickerController {
 
     @Autowired
@@ -23,6 +25,7 @@ public class StickerController {
     @PostMapping
     @ApiOperation(value = "스티커 편집기능", notes = "스티커를 편집합니다.")
     public BaseResponse<PostStickerRes> createSticker(@RequestBody List<PostStickerReq> postStickerReq){
+        log.info("postStickerReq = {}", postStickerReq);
         return new BaseResponse<>(stickerService.createSticker(postStickerReq));
     }
 

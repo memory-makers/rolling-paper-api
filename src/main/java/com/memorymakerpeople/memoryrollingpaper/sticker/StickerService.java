@@ -2,6 +2,7 @@ package com.memorymakerpeople.memoryrollingpaper.sticker;
 
 import com.memorymakerpeople.memoryrollingpaper.config.BaseResponseStatus;
 import com.memorymakerpeople.memoryrollingpaper.sticker.model.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,36 +12,52 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class StickerService {
 
     @Autowired
     private StickerRepository stickerRepository;
 
     public PostStickerRes createSticker(List<PostStickerReq> postStickerReq) {
-        System.out.println("postStickerReq = " + postStickerReq);
-        List<Sticker> stickers = null;
-        List<Sticker> deleteStickersId = null;
+        log.info("postStickerReq = {}", postStickerReq);
+        List<Sticker> stickers = new ArrayList<Sticker>();
+        List<Sticker> deleteStickers = new ArrayList<Sticker>();
         for (PostStickerReq stickerReq : postStickerReq) {
-            Sticker sticker = Sticker.builder()
-                    .paperId(stickerReq.getPaperId())
-                    .rotate(stickerReq.getRotate())
-                    .scale(stickerReq.getScale())
-                    .stickerId(stickerReq.getStickerId())
-                    .stickerSize(stickerReq.getStickerSize())
-                    .type(stickerReq.getType())
-                    .x(stickerReq.getX())
-                    .y(stickerReq.getY())
-                    .build();
-            System.out.println("sticker = " + sticker);
-            if(stickerReq.getRequestType().equals("delete")) {
-                deleteStickersId.add(sticker);
-            }else if (stickerReq.getRequestType().equals("create") || stickerReq.getRequestType().equals("update")){
-                stickers.add(sticker);
+            if(stickerReq.getRequestType().equals("create")) {
+                Sticker createSticker = Sticker.builder()
+                        .paperId(stickerReq.getPaperId())
+                        .rotate(stickerReq.getRotate())
+                        .scale(stickerReq.getScale())
+                        .stickerSize(stickerReq.getStickerSize())
+                        .type(stickerReq.getType())
+                        .x(stickerReq.getX())
+                        .y(stickerReq.getY())
+                        .build();
+                stickers.add(createSticker);
+            }else {
+                Sticker sticker = Sticker.builder()
+                        .paperId(stickerReq.getPaperId())
+                        .rotate(stickerReq.getRotate())
+                        .scale(stickerReq.getScale())
+                        .stickerId(stickerReq.getStickerId())
+                        .stickerSize(stickerReq.getStickerSize())
+                        .type(stickerReq.getType())
+                        .x(stickerReq.getX())
+                        .y(stickerReq.getY())
+                        .build();
+                if(stickerReq.getRequestType().equals("delete")) {
+                    deleteStickers.add(sticker);
+                }
+                if(stickerReq.getRequestType().equals("update")) {
+                    stickers.add(sticker);
+                }
             }
         }
 
+        log.info("stickers = {}", stickers);
+        log.info("deleteStickers = {}", deleteStickers);
         List<Sticker> result = stickerRepository.saveAll(stickers);
-        stickerRepository.deleteAll(deleteStickersId);
+        stickerRepository.deleteAll(deleteStickers);
 
         if(!result.isEmpty()) {
             return new PostStickerRes(result, BaseResponseStatus.SUCCESS);
