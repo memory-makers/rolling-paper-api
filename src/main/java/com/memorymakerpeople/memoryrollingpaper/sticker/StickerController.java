@@ -23,7 +23,7 @@ public class StickerController {
     private final StickerService stickerService;
 
     @PostMapping
-    @ApiOperation(value = "스티커 편집기능", notes = "스티커를 편집합니다.")
+    @ApiOperation(value = "스티커 편집기능", notes = "스티커를 편집합니다. 오픈 날짜 이후 카드 편집 불가")
     public BaseResponse<PostStickerRes> createSticker(@RequestBody List<PostStickerReq> postStickerReq){
         log.info("postStickerReq = {}", postStickerReq);
         return new BaseResponse<>(stickerService.createSticker(postStickerReq));

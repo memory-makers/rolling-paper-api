@@ -25,6 +25,8 @@ public class Member implements Serializable {
     private String email;
     private String nickname;
     private String password;
+    private String kakaoAccessToken;
+    private String kakaoId;
 
     @Builder
     public Member(String email, String nickname) {

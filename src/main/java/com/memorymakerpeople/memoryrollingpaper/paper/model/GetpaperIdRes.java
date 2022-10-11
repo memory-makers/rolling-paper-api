@@ -3,7 +3,6 @@ package com.memorymakerpeople.memoryrollingpaper.paper.model;
 import com.memorymakerpeople.memoryrollingpaper.config.BaseResponseStatus;
 import lombok.*;
 
-import java.math.BigInteger;
 
 @Getter
 @Setter
@@ -11,7 +10,7 @@ import java.math.BigInteger;
 @NoArgsConstructor
 @ToString
 public class GetpaperIdRes {
-    private BigInteger paperId;
+    private Long paperId;
     private BaseResponseStatus status;
 
 }

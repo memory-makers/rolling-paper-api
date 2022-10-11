@@ -3,6 +3,7 @@ package com.memorymakerpeople.memoryrollingpaper.member;
 import com.memorymakerpeople.memoryrollingpaper.authLogin.UserLoginRes;
 import com.memorymakerpeople.memoryrollingpaper.config.BaseResponse;
 import com.memorymakerpeople.memoryrollingpaper.config.BaseResponseStatus;
+import com.memorymakerpeople.memoryrollingpaper.member.model.GetLogoutRes;
 import com.memorymakerpeople.memoryrollingpaper.member.model.GetMemberRes;
 import com.memorymakerpeople.memoryrollingpaper.member.model.PutMemberReq;
 import com.memorymakerpeople.memoryrollingpaper.member.model.PutMemberRes;
@@ -10,9 +11,15 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
+import java.net.URI;
 
 @RestController
 @Api(tags = {"회원관리 API"})
@@ -79,4 +86,20 @@ public class MemberController {
         System.out.println("loginRes = " + loginRes);
         return memberService.selectNickname(loginRes.getEmail());
     }
+
+
+    /*@ApiOperation(value="사용자 로그아웃", notes = "KAKAO API에 로그아웃 요청을 통해 로그아웃 합니다.")
+    @GetMapping("/logout")
+    public ResponseEntity<?> logout(@AuthenticationPrincipal UserLoginRes loginRes, HttpServletResponse response) {
+        System.out.println("loginRes = " + loginRes);
+        GetLogoutRes logout = memberService.logout(loginRes);
+        if(logout.getStatus().equals(BaseResponseStatus.SUCCESS)) {
+            log.info("Status = {}", logout.getStatus());
+            HttpHeaders headers = new HttpHeaders();
+            headers.setLocation(URI.create(logout.getState()));
+            return new ResponseEntity<>(headers, HttpStatus.FOUND);
+        }
+        return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+    }
+*/
 }

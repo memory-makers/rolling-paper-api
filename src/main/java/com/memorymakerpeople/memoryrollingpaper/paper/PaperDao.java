@@ -1,20 +1,10 @@
 package com.memorymakerpeople.memoryrollingpaper.paper;
-
-import com.memorymakerpeople.memoryrollingpaper.authLogin.UserLoginRes;
-import com.memorymakerpeople.memoryrollingpaper.member.model.Authority;
-import com.memorymakerpeople.memoryrollingpaper.member.model.PostMemberReq;
-import com.memorymakerpeople.memoryrollingpaper.member.model.PostMemberRes;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 @Repository
 @Slf4j
@@ -26,7 +16,7 @@ public class PaperDao {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-    public Boolean checkEmailAndPaperId(String email, BigInteger paperId) {
+    public Boolean checkEmailAndPaperId(String email, Long paperId) {
         String checkEmailQuery = "select exists" +
                                     "(select p.paper_id " +
                                     "from tbl_paper p join tbl_user u " +
@@ -43,5 +33,7 @@ public class PaperDao {
 
         return false;
     }
+
+
 
 }

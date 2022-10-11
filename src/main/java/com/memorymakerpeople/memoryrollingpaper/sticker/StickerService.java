@@ -18,6 +18,7 @@ public class StickerService {
     @Autowired
     private StickerRepository stickerRepository;
 
+    //리펙토링 필요
     public PostStickerRes createSticker(List<PostStickerReq> postStickerReq) {
         log.info("postStickerReq = {}", postStickerReq);
         List<Sticker> stickers = new ArrayList<Sticker>();
@@ -66,9 +67,7 @@ public class StickerService {
     }
 
     public GetStickerListRes selectStickerList(int paperId) {
-        System.out.println("paperId = " + paperId);
         List<Sticker> result = stickerRepository.findByPaperId(paperId);
-        System.out.println("result = " + result);
         if(!result.isEmpty()) {
             return new GetStickerListRes(result, BaseResponseStatus.SUCCESS);
         }

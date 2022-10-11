@@ -7,7 +7,6 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
-import java.math.BigInteger;
 import java.sql.Timestamp;
 
 @NoArgsConstructor
@@ -21,12 +20,11 @@ public class Paper {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private BigInteger paperId;
+    private Long paperId;
     private String paperTitle;
     private String theme;
     private String paperUrl;
     private String deleteYn;
-    private String openStatus;
     private String userId;
     private Timestamp createdAt;
     private Timestamp updatedAt;

@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigInteger;
 import java.util.List;
 
 @RestController
@@ -38,7 +37,7 @@ public class PaperController {
 
     @GetMapping("/{paperId}")
     @ApiOperation(value = "롤링페이퍼 보기", notes = "하나의 롤링페이퍼를 조회합니다.")
-    public BaseResponse<GetPaperRes> paperDetail(@PathVariable BigInteger paperId){
+    public BaseResponse<GetPaperRes> paperDetail(@PathVariable Long paperId){
         log.info("paperId = {}", paperId);
         return new BaseResponse<>(paperService.selectOnePaper(paperId));
     }
@@ -59,9 +58,17 @@ public class PaperController {
 
     @DeleteMapping("/{paperId}")
     @ApiOperation(value = "롤링페이퍼 삭제", notes = "롤링페이퍼를 삭제합니다.")
-    public BaseResponse<DeletePaperRes> deletePaper(@AuthenticationPrincipal UserLoginRes userLoginRes, @PathVariable BigInteger paperId){
+    public BaseResponse<DeletePaperRes> deletePaper(@AuthenticationPrincipal UserLoginRes userLoginRes, @PathVariable Long paperId){
         log.info("userLoginRes = {}", userLoginRes);
         log.info("paperId = {}", paperId);
         return new BaseResponse<>(paperService.deletePaper(paperId, userLoginRes.getEmail()));
+    }
+
+
+    @GetMapping("/{paperId}/nickname")
+    @ApiOperation(value = "nickname 조회", notes = "paperId를 이용해서 nickname을 조회합니다.")
+    public BaseResponse<GetPaperNicknameRes> findNickname(@PathVariable String paperId){
+        log.info("paperId = {}", paperId);
+        return new BaseResponse<>(paperService.selectNickname(paperId));
     }
 }
