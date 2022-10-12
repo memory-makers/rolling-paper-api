@@ -4,19 +4,28 @@ import com.memorymakerpeople.memoryrollingpaper.card.model.Card;
 import com.memorymakerpeople.memoryrollingpaper.card.model.GetCardResponse;
 import com.memorymakerpeople.memoryrollingpaper.card.model.PostCardResponse;
 import com.memorymakerpeople.memoryrollingpaper.config.BaseResponseStatus;
+import com.memorymakerpeople.memoryrollingpaper.paper.PaperRepository;
+import com.memorymakerpeople.memoryrollingpaper.paper.model.Paper;
+import com.memorymakerpeople.memoryrollingpaper.utils.ValidUtil;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import java.sql.Timestamp;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class CardService {
 
     @Autowired
-    private CardRepository cardRepository;
+    private final CardRepository cardRepository;
+
+    private final PaperRepository paperRepository;
 
     //리펙토링 필요
     public GetCardResponse getCardList(String paperId){
@@ -30,10 +39,15 @@ public class CardService {
 
     //리펙토링 필요
     public PostCardResponse createCard(Card card) {
+        Optional<Paper> Paper = paperRepository.findByPaperId(Long.valueOf(card.getCardId()));
+        BaseResponseStatus INVALID_CARD_DUE_DATE = ValidUtil.validCardDueDate(Paper);
+        if (INVALID_CARD_DUE_DATE != null) return new PostCardResponse(null,INVALID_CARD_DUE_DATE);
+
         Card result = cardRepository.save(card);
         log.info("saved card = {}", result);
         return new PostCardResponse(result, BaseResponseStatus.SUCCESS);
     }
+
 
     /*
     public CardResponseDto updateCard(Card card) {

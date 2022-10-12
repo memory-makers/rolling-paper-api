@@ -1,7 +1,12 @@
 package com.memorymakerpeople.memoryrollingpaper.sticker;
 
+import com.memorymakerpeople.memoryrollingpaper.card.model.PostCardResponse;
 import com.memorymakerpeople.memoryrollingpaper.config.BaseResponseStatus;
+import com.memorymakerpeople.memoryrollingpaper.paper.PaperRepository;
+import com.memorymakerpeople.memoryrollingpaper.paper.model.Paper;
 import com.memorymakerpeople.memoryrollingpaper.sticker.model.*;
+import com.memorymakerpeople.memoryrollingpaper.utils.ValidUtil;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,13 +18,26 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class StickerService {
 
     @Autowired
-    private StickerRepository stickerRepository;
+    private final StickerRepository stickerRepository;
+
+    @Autowired
+    private final PaperRepository paperRepository;
 
     //리펙토링 필요
     public PostStickerRes createSticker(List<PostStickerReq> postStickerReq) {
+
+        int paperId = postStickerReq.get(0).getPaperId();
+        Optional<Paper> Paper = paperRepository.findByPaperId((long) paperId);
+
+        BaseResponseStatus INVALID_CARD_DUE_DATE = ValidUtil.validCardDueDate(Paper);
+        if (INVALID_CARD_DUE_DATE != null) return new PostStickerRes(null,INVALID_CARD_DUE_DATE);
+
+
+
         log.info("postStickerReq = {}", postStickerReq);
         List<Sticker> stickers = new ArrayList<Sticker>();
         List<Sticker> deleteStickers = new ArrayList<Sticker>();

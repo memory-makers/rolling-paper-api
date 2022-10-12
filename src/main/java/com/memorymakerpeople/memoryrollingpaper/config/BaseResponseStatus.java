@@ -32,6 +32,9 @@ public enum BaseResponseStatus {
     // [GET] /Card
     EMPTY_CARD_LIST(false, 2201, "생성된 카드가 없습니다."),
 
+    // [POST] /Card
+    INVALID_CARD_DUE_DATE(false,2202,"해당 롤링페이퍼는 기간이 지났음으로 더 이상 수정이나 삭제가 불가능합니다."),
+
     // [GET] /Stickers
     FAILED_TO_LOAD_STICKERS(false, 2100, "잘못된 PaperId 입니다."),
     FAILED_TO_LOAD_STICKER(false, 2101, "잘못된 StickerId 입니다."),
