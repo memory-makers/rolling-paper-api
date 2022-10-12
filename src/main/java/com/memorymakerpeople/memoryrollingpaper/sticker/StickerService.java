@@ -36,8 +36,6 @@ public class StickerService {
         BaseResponseStatus INVALID_CARD_DUE_DATE = ValidUtil.validCardDueDate(Paper);
         if (INVALID_CARD_DUE_DATE != null) return new PostStickerRes(null,INVALID_CARD_DUE_DATE);
 
-
-
         log.info("postStickerReq = {}", postStickerReq);
         List<Sticker> stickers = new ArrayList<Sticker>();
         List<Sticker> deleteStickers = new ArrayList<Sticker>();

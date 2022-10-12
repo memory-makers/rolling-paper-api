@@ -24,7 +24,7 @@ public class CardController {
     @PostMapping
     @ApiOperation(value = "카드 생성", notes = "하나의 롤링페이퍼에 있는 카드를 생성 합니다. 오픈날짜 이후 카드 생성 불가")
     public BaseResponse<PostCardResponse> createCard(@RequestBody Card card){
-        log.info("card = {}",card);
+        log.info("card V2= {}",card);
         return new BaseResponse<>(cardService.createCard(card));
     }
 

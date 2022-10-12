@@ -22,7 +22,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CardService {
 
-    @Autowired
     private final CardRepository cardRepository;
 
     private final PaperRepository paperRepository;
@@ -39,12 +38,11 @@ public class CardService {
 
     //리펙토링 필요
     public PostCardResponse createCard(Card card) {
-        Optional<Paper> Paper = paperRepository.findByPaperId(Long.valueOf(card.getCardId()));
+        Optional<Paper> Paper = paperRepository.findByPaperId(Long.valueOf(card.getPaperId()));
         BaseResponseStatus INVALID_CARD_DUE_DATE = ValidUtil.validCardDueDate(Paper);
         if (INVALID_CARD_DUE_DATE != null) return new PostCardResponse(null,INVALID_CARD_DUE_DATE);
 
         Card result = cardRepository.save(card);
-        log.info("saved card = {}", result);
         return new PostCardResponse(result, BaseResponseStatus.SUCCESS);
     }
 
