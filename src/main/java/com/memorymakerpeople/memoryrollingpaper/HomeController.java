@@ -15,4 +15,9 @@ public class HomeController {
         return "OK";
     }
 
+    @GetMapping("logout/oauth2")
+    public String logoutOk() {
+
+        return "OK";
+    }
 }

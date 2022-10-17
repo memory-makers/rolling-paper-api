@@ -1,16 +1,15 @@
-package com.memorymakerpeople.memoryrollingpaper.sticker.model;
+package com.memorymakerpeople.memoryrollingpaper.paper.model;
+
 
 import com.memorymakerpeople.memoryrollingpaper.config.BaseResponseStatus;
 import lombok.*;
-
-import java.util.List;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class PostStickerRes{
-    private List<Sticker> stickers;
+public class GetPaperNicknameRes {
+    private String nickname;
     private BaseResponseStatus status;
 }

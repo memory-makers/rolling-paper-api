@@ -1,4 +1,4 @@
-package com.memorymakerpeople.memoryrollingpaper.sticker.model;
+package com.memorymakerpeople.memoryrollingpaper.card.model;
 
 import com.memorymakerpeople.memoryrollingpaper.config.BaseResponseStatus;
 import lombok.*;
@@ -10,7 +10,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class PostStickerRes{
-    private List<Sticker> stickers;
+public class GetCardResponse {
+    private List<Card> card;
     private BaseResponseStatus status;
+
 }

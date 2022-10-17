@@ -20,15 +20,27 @@ public enum BaseResponseStatus {
     // [POST] /users
     POST_USER_INFO_NULL(false, 2041, "빠진 가입 정보가 없는지 확인해주세요."),
 
+    // [POST] /users
+    GET_USER_INFO_NULL(false, 2042, "로그인 후 다시 이용해주세요."),
+
     // [GET] /Papers
     EMPTY_PAPER_ID(false, 2050, "PaperId 값을 입력해주세요."),
 
     // [Put] /Papers
     FAILED_TO_PAPER_UPDATE(false, 2051, "본인의 게시물이 아니면 수정할 수 없습니다."),
 
+    // [GET] /Card
+    EMPTY_CARD_LIST(false, 2201, "생성된 카드가 없습니다."),
+
+    // [POST] /Card
+    INVALID_CARD_DUE_DATE(false,2202,"해당 롤링페이퍼는 기간이 지났음으로 더 이상 수정이나 삭제가 불가능합니다."),
+
     // [GET] /Stickers
     FAILED_TO_LOAD_STICKERS(false, 2100, "잘못된 PaperId 입니다."),
     FAILED_TO_LOAD_STICKER(false, 2101, "잘못된 StickerId 입니다."),
+
+    // [Post] /Stickers
+    EMPTY_STICKER_LIST(false, 2120, "스티커 리스트를 찾을 수 없습니다."),
 
     //   3000 : Response 오류
     // Common
