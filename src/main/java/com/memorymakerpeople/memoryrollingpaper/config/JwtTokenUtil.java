@@ -24,8 +24,7 @@ public class JwtTokenUtil implements Serializable {
     //jwt 토큰에서 사용자 이름 검색.
     public String getUsernameFromToken(String token) {
         log.info("token = {}", token);
-        log.info("getClaimFromToken(token, Claims::getSubject) = {}", getClaimFromToken(token, Claims::getSubject));
-        return getClaimFromToken(token, Claims::getSubject); //왜안나옴 ? ;ㅁ;
+        return getClaimFromToken(token, Claims::getSubject);
     }
 
     //jwt 토큰에서 만료 날짜 검색.

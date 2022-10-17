@@ -30,11 +30,13 @@ public class StickerService {
     //리펙토링 필요
     public PostStickerRes createSticker(List<PostStickerReq> postStickerReq) {
 
-        int paperId = postStickerReq.get(0).getPaperId();
-        Optional<Paper> Paper = paperRepository.findByPaperId((long) paperId);
+        Long paperId = postStickerReq.get(0).getPaperId();
+        Optional<Paper> Paper = paperRepository.findByPaperId(paperId);
 
         BaseResponseStatus INVALID_CARD_DUE_DATE = ValidUtil.validCardDueDate(Paper);
-        if (INVALID_CARD_DUE_DATE != null) return new PostStickerRes(null,INVALID_CARD_DUE_DATE);
+        if (INVALID_CARD_DUE_DATE != null) {
+            return new PostStickerRes(null,INVALID_CARD_DUE_DATE);
+        }
 
 
 
@@ -84,7 +86,7 @@ public class StickerService {
         return new PostStickerRes(null, BaseResponseStatus.FAILED_TO_LOAD_STICKERS);
     }
 
-    public GetStickerListRes selectStickerList(int paperId) {
+    public GetStickerListRes selectStickerList(Long paperId) {
         List<Sticker> result = stickerRepository.findByPaperId(paperId);
         if(!result.isEmpty()) {
             return new GetStickerListRes(result, BaseResponseStatus.SUCCESS);
