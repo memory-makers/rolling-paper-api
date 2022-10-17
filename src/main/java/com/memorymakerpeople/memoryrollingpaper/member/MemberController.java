@@ -9,6 +9,7 @@ import com.memorymakerpeople.memoryrollingpaper.member.model.PutMemberReq;
 import com.memorymakerpeople.memoryrollingpaper.member.model.PutMemberRes;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -22,13 +23,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.net.URI;
 
 @RestController
+@RequiredArgsConstructor
 @Api(tags = {"회원관리 API"})
 @RequestMapping("/members")
 @Slf4j
 public class MemberController {
 
-    @Autowired
-    private MemberService memberService;
+    private final MemberService memberService;
 
     /*@ApiOperation(value = "카카오 회원 로그인/회원가입", notes = "카카오에서 발급하는 id를 사용해 로그인을 합니다. 만약 기존 회원이 아니라면 추가(회원가입) 합니다.")
     @PostMapping("/login")

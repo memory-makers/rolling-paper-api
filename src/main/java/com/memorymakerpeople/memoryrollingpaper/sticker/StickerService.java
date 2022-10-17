@@ -21,10 +21,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class StickerService {
 
-    @Autowired
     private final StickerRepository stickerRepository;
-
-    @Autowired
     private final PaperRepository paperRepository;
 
     //리펙토링 필요
