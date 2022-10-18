@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 import java.util.Optional;
 
-public interface StickerRepository extends JpaRepository<Sticker, Integer> {
-    Optional<Sticker> findByStickerId(int stickerId);
-    List<Sticker> findByPaperId(int paperId); //아아디로 된 페이퍼 모두 찾기
+public interface StickerRepository extends JpaRepository<Sticker, Long> {
+    Optional<Sticker> findByStickerId(Long stickerId);
+    List<Sticker> findByPaperId(Long paperId); //아아디로 된 페이퍼 모두 찾기
 }

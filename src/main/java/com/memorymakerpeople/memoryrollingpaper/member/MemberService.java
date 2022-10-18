@@ -5,6 +5,7 @@ import com.memorymakerpeople.memoryrollingpaper.config.BaseResponseStatus;
 import com.memorymakerpeople.memoryrollingpaper.member.model.GetLogoutRes;
 import com.memorymakerpeople.memoryrollingpaper.member.model.Member;
 import com.memorymakerpeople.memoryrollingpaper.member.model.PutMemberRes;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,11 +20,11 @@ import java.nio.charset.StandardCharsets;
 
 
 @Service
+@RequiredArgsConstructor
 @Slf4j
 public class MemberService {
 
-    @Autowired
-    private MemberRepository memberRepository;
+    private final MemberRepository memberRepository;
 
     @Value("${kakao.client_id}")
     private String client_id;

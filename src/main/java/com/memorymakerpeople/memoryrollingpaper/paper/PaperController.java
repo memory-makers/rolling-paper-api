@@ -5,6 +5,7 @@ import com.memorymakerpeople.memoryrollingpaper.config.BaseResponse;
 import com.memorymakerpeople.memoryrollingpaper.paper.model.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -13,13 +14,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/papers")
 @Api(tags = {"롤링페이퍼 관리 API"})
 @Slf4j
 public class PaperController {
 
-    @Autowired
-    private PaperService paperService;
+    private final PaperService paperService;
 
     @PostMapping
     @ApiOperation(value = "롤링페이퍼 생성", notes = "현재 로그인된 아이디를 기준으로 롤링페이퍼를 생성 합니다.")

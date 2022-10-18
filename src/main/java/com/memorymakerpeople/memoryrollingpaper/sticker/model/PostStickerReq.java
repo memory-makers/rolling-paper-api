@@ -15,6 +15,6 @@ public class PostStickerReq {
     private float x;
     private float y;
     private float scale;
-    private int paperId;
+    private Long paperId;
     private String requestType;
 }

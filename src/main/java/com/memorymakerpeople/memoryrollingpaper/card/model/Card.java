@@ -26,7 +26,7 @@ public class Card {
     private String cardWriter;
 
     @Builder
-    public Card(Long cardId, String cardText, String cardColor, Long paperId, String fontStyle, String fontColor, String cardWriter) {
+    public Card Card(Long cardId, String cardText, String cardColor, Long paperId, String fontStyle, String fontColor,String  cardWriter) {
         this.cardId = cardId;
         this.cardText = cardText;
         this.cardColor = cardColor;
