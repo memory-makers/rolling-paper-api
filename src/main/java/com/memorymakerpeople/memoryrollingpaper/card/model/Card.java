@@ -16,11 +16,23 @@ public class Card {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int cardId;
+    private Long cardId;
     private String cardText;
     private String cardColor;
-    private String paperId;
+    private Long paperId;
     private String fontStyle;
     private String fontColor;
     private String cardWriter;
+
+
+    @Builder
+    public Card Card(Long cardId, String cardText, String cardColor, Long paperId, String fontStyle, String fontColor,String  cardWriter) {
+        this.cardId = cardId;
+        this.cardText = cardText;
+        this.cardColor = cardColor;
+        this.paperId = paperId;
+        this.fontStyle = fontStyle;
+        this.fontColor = fontColor;
+        this.cardWriter = cardWriter;
+    }
 }

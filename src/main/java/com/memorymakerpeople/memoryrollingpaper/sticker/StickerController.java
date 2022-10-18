@@ -30,7 +30,7 @@ public class StickerController {
 
     @GetMapping
     @ApiOperation(value = "스티커 리스트 보기", notes = "paperId를 기준으로 스티커를 조회합니다.")
-    public BaseResponse<GetStickerListRes> stickerList(int paperId) {
+    public BaseResponse<GetStickerListRes> stickerList(Long paperId) {
         return new BaseResponse<>(stickerService.selectStickerList(paperId));
     }
 /*

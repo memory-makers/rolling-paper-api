@@ -9,7 +9,14 @@ import lombok.*;
 @NoArgsConstructor
 @ToString
 public class PostCardResponse {
-    private Card card;
+    /*private Long cardId;
+    private String cardText;
+    private String cardColor;
+    private Long paperId;
+    private String fontStyle;
+    private String fontColor;
+    private String cardWriter;*/
+    private Card card; //리펙토링
     private BaseResponseStatus status;
 
 }
