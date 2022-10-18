@@ -15,6 +15,7 @@ public class PostCardReq {
     private String fontColor;
     private String cardWriter;
 
+
     public Card toEntity() {
         return Card.builder().
                 cardText(this.cardText).

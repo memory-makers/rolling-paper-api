@@ -7,7 +7,6 @@ import javax.persistence.*;
 
 @NoArgsConstructor
 @Getter
-@Setter
 @Entity
 @DynamicInsert // null로 들어가야 하는 경우 대응(기본값)
 @DynamicUpdate // 변경한 필드만 대응
@@ -26,7 +25,7 @@ public class Card {
 
 
     @Builder
-    public Card Card(Long cardId, String cardText, String cardColor, Long paperId, String fontStyle, String fontColor,String  cardWriter) {
+    public Card(Long cardId, String cardText, String cardColor, Long paperId, String fontStyle, String fontColor,String  cardWriter) {
         this.cardId = cardId;
         this.cardText = cardText;
         this.cardColor = cardColor;

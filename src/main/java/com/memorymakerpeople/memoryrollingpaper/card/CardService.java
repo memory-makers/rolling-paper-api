@@ -39,14 +39,17 @@ public class CardService {
 
     //리펙토링 필요
     public PostCardResponse createCard(PostCardReq card) {
+
         Optional<Paper> Paper = paperRepository.findByPaperId(card.getPaperId());
         BaseResponseStatus INVALID_CARD_DUE_DATE = ValidUtil.validCardDueDate(Paper);
+
         if (INVALID_CARD_DUE_DATE != null) {
             return new PostCardResponse(null,INVALID_CARD_DUE_DATE);
         }
 
-        Card result = cardRepository.save(card.toEntity());
-        log.info("saved card = {}", result);
+        Card save = cardRepository.save(card.toEntity());
+        Long result = save.getCardId();
+
         return new PostCardResponse(result, BaseResponseStatus.SUCCESS);
     }
 }

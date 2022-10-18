@@ -1,5 +1,7 @@
 package com.memorymakerpeople.memoryrollingpaper.paper.model;
 
+import com.memorymakerpeople.memoryrollingpaper.config.BaseResponseStatus;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -29,4 +31,30 @@ public class Paper {
     private Timestamp createdAt;
     private Timestamp updatedAt;
     private Timestamp dueDate;
+
+    @Builder
+    public Paper(Long paperId, String paperTitle, String theme, String paperUrl, String deleteYn, String userId, Timestamp dueDate){
+        this.paperId = paperId;
+        this.paperTitle = paperTitle;
+        this.theme = theme;
+        this.paperUrl = paperUrl;
+        this.deleteYn = deleteYn;
+        this.userId = userId;
+        this.dueDate = dueDate;
+    }
+
+    public GetPaperRes toGetPaperRes() {
+        return new GetPaperRes.GetPaperResBuilder().
+                paperId(this.paperId).
+                paperTitle(this.paperTitle).
+                theme(this.theme).
+                paperUrl(this.paperUrl).
+                deleteYn(this.deleteYn).
+                userId(this.userId).
+                createdAt(this.createdAt).
+                updatedAt(this.updatedAt).
+                dueDate(this.dueDate).
+                build();
+    }
+
 }
