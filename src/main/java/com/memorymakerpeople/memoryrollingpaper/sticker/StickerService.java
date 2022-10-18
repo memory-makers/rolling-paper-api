@@ -21,10 +21,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class StickerService {
 
-    @Autowired
     private final StickerRepository stickerRepository;
-
-    @Autowired
     private final PaperRepository paperRepository;
 
     //리펙토링 필요
@@ -37,8 +34,6 @@ public class StickerService {
         if (INVALID_CARD_DUE_DATE != null) {
             return new PostStickerRes(null,INVALID_CARD_DUE_DATE);
         }
-
-
 
         log.info("postStickerReq = {}", postStickerReq);
         List<Sticker> stickers = new ArrayList<Sticker>();

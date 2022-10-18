@@ -22,7 +22,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CardService {
 
-    @Autowired
     private final CardRepository cardRepository;
 
     private final PaperRepository paperRepository;
