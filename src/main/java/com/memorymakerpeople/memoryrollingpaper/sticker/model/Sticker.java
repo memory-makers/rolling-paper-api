@@ -38,8 +38,17 @@ public class Sticker {
         this.scale = scale;
         this.paperId = paperId;
     }
-}
 
-//1.postStickerRequestDto를 만들어서 파라미터로 전체 다 복사하여 전달(Builder 패턴 사용)
-//2.postStickerRequestDto를 만들어서 파라미터로 private Sticker sticker; 객체를 전달
-//3.Sticker 자체를 파라미터로 전달
+    public StickerRes GetStickerRes() {
+        return new StickerRes.StickerResBuilder().
+                stickerId(this.stickerId).
+                stickerSize(this.stickerSize).
+                type(this.type).
+                rotate(this.rotate).
+                x(this.x).
+                y(this.y).
+                scale(this.scale).
+                paperId(this.paperId).
+                build();
+    }
+}

@@ -33,22 +33,4 @@ public class StickerController {
     public BaseResponse<GetStickerListRes> stickerList(Long paperId) {
         return new BaseResponse<>(stickerService.selectStickerList(paperId));
     }
-/*
-    @GetMapping("/{stickerId}")
-    @ApiOperation(value = "하나의 스티커 보기", notes = "stickerId를 기준으로 스티커를 조회합니다.")
-    public BaseResponse<GetStickerRes> stickerDetail(@PathVariable int stickerId) {
-        return new BaseResponse<>(stickerService.selectSticker(stickerId));
-    }
-
-    @PutMapping("/{stickerId}")
-    @ApiOperation(value = "스티커 업데이트", notes = "stickerId를 기준으로 스티커를 업데이트합니다.")
-    public BaseResponse<PutStickerRes> updateSticker(@RequestBody PutStickerReq putStickerReq){
-        return new BaseResponse<>(stickerService.updateSticker(putStickerReq));
-    }
-
-    @DeleteMapping("/{stickerId}")
-    @ApiOperation(value = "스티커 삭제", notes = "stickerId를 기준으로 스티커를 삭제합니다.")
-    public BaseResponse<DeleteStickerRes> deleteSticker(@PathVariable int stickerId) {
-        return new BaseResponse<>(stickerService.deleteSticker(stickerId));
-    }*/
 }

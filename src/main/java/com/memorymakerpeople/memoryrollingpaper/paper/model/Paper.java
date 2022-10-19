@@ -1,5 +1,6 @@
 package com.memorymakerpeople.memoryrollingpaper.paper.model;
 
+
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -28,7 +29,6 @@ public class Paper {
     private Long userId;
     private Timestamp dueDate;
 
-
     @Builder
     public Paper(Long paperId, String paperTitle, String theme, String paperUrl, String deleteYn, Long userId, Timestamp dueDate) {
         this.paperId = paperId;
@@ -39,4 +39,19 @@ public class Paper {
         this.userId = userId;
         this.dueDate = dueDate;
     }
+
+    public GetPaperRes toGetPaperRes() {
+        return new GetPaperRes.GetPaperResBuilder().
+                paperId(this.paperId).
+                paperTitle(this.paperTitle).
+                theme(this.theme).
+                paperUrl(this.paperUrl).
+                deleteYn(this.deleteYn).
+                userId(this.userId).
+                createdAt(this.createdAt).
+                updatedAt(this.updatedAt).
+                dueDate(this.dueDate).
+                build();
+    }
+
 }

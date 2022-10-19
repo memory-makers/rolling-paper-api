@@ -17,4 +17,19 @@ public class PostStickerReq {
     private float scale;
     private Long paperId;
     private String requestType;
+
+    @Builder
+    public Sticker toEntity() {
+        return new Sticker.StickerBuilder().
+                stickerId(this.stickerId).
+                stickerSize(this.stickerSize).
+                type(this.type).
+                rotate(this.rotate).
+                x(this.x).
+                y(this.y).
+                scale(this.scale).
+                paperId(this.paperId).
+                build();
+
+    }
 }
