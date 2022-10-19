@@ -6,11 +6,13 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED) // new 클래스() 제한
+@ToString(callSuper = true)
+@EqualsAndHashCode
 @Getter
 @Entity
-@DynamicUpdate // 변경한 필드만 대응
 @DynamicInsert // null로 들어가야 하는 경우 대응(기본값)
+@DynamicUpdate // 변경한 필드만 대응
 @Table(name = "tbl_sticker")
 public class Sticker {
 

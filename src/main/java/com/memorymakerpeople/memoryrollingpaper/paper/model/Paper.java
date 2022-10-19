@@ -1,22 +1,21 @@
 package com.memorymakerpeople.memoryrollingpaper.paper.model;
 
-import com.memorymakerpeople.memoryrollingpaper.config.BaseResponseStatus;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+
+import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import java.sql.Time;
 import java.sql.Timestamp;
 
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED) // new 클래스() 제한
+@ToString(callSuper = true)
+@EqualsAndHashCode
 @Getter
-@Setter
 @Entity
-@DynamicUpdate // 변경한 필드만 대응
 @DynamicInsert // null로 들어가야 하는 경우 대응(기본값)
+@DynamicUpdate // 변경한 필드만 대응
 @Table(name = "tbl_paper")
 public class Paper {
 
@@ -27,13 +26,11 @@ public class Paper {
     private String theme;
     private String paperUrl;
     private String deleteYn;
-    private String userId;
-    private Timestamp createdAt;
-    private Timestamp updatedAt;
+    private Long userId;
     private Timestamp dueDate;
 
     @Builder
-    public Paper(Long paperId, String paperTitle, String theme, String paperUrl, String deleteYn, String userId, Timestamp dueDate){
+    public Paper(Long paperId, String paperTitle, String theme, String paperUrl, String deleteYn, Long userId, Timestamp dueDate) {
         this.paperId = paperId;
         this.paperTitle = paperTitle;
         this.theme = theme;

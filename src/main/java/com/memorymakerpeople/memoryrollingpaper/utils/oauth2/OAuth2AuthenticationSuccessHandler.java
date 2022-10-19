@@ -15,6 +15,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Enumeration;
 import java.util.Map;
 
 @Component
@@ -37,7 +38,6 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         Map<String, Object> kakao_account = (Map<String, Object>) oAuth2User.getAttributes().get("kakao_account");
         String email = (String) kakao_account.get("email");
         UserLoginRes userLoginRes = memberProvider.findByEmail(email);
-        log.info("userLoginRes!!-!! = {} and Email = {}", userLoginRes, userLoginRes.getEmail());
 
         //토큰 생성
         String jwt = jwtTokenUtil.generateToken(userLoginRes);
@@ -53,37 +53,13 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
 
     private String makeRedirectUrl(String token, HttpServletRequest req) {
-        String clientIp = getClientIp(req);
-        /*return UriComponentsBuilder.fromUriString("https://rolling-paper-makers.vercel.app/kakao?token="+token)
-                .build().toUriString();*/
+        String referer = req.getHeader("referer");
+        if(referer.equals("https://rolling-paper-makers.vercel.app/")) { //실서버 일 경우
+            return UriComponentsBuilder.fromUriString("https://rolling-paper-makers.vercel.app/kakao?token="+token)
+                    .build().toUriString();
+        }
+        //그 외 개발서버
         return UriComponentsBuilder.fromUriString("http://localhost:5173/kakao?token="+token)
                 .build().toUriString();
-        /*System.out.println("=========OAuth2AuthenticationSuccessHandler.makeRedirectUrl ============");
-        System.out.println("http://"+clientIp+"/kakao?token="+token);
-        return UriComponentsBuilder.fromUriString(clientIp+"/kakao?token="+token)
-                .build().toUriString();*/
-    }
-
-    public static String getClientIp(HttpServletRequest req) {
-        String ip = req.getHeader("X-FORWARDED-FOR");
-
-        //proxy 환경일 경우
-        if (ip == null || ip.length() == 0) {
-            System.out.println("11111111111111111");
-            ip = req.getHeader("Proxy-Client-IP");
-        }
-
-        //웹로직 서버일 경우
-        if (ip == null || ip.length() == 0) {
-            System.out.println("22222222222222222");
-            ip = req.getHeader("WL-Proxy-Client-IP");
-        }
-
-        if (ip == null || ip.length() == 0) {
-            System.out.println("33333333333333333");
-            ip = req.getRemoteAddr() ;
-        }
-
-        return ip;
     }
 }

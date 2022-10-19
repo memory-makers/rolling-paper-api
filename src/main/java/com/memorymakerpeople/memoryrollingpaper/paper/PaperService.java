@@ -5,6 +5,7 @@ import com.memorymakerpeople.memoryrollingpaper.member.MemberRepository;
 import com.memorymakerpeople.memoryrollingpaper.member.model.Member;
 import com.memorymakerpeople.memoryrollingpaper.paper.model.*;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,16 +15,11 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class PaperService {
 
-    @Autowired
     private final PaperRepository paperRepository;
-
-    @Autowired
     private final PaperDao paperDao;
-
-    @Autowired
     private final MemberRepository memberRepository;
 
     public PostPaperRes createPaper(PostPaperReq postPaperReq, String userId) {

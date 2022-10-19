@@ -19,7 +19,6 @@ import java.util.List;
 @Slf4j
 public class StickerController {
 
-    @Autowired
     private final StickerService stickerService;
 
     @PostMapping
