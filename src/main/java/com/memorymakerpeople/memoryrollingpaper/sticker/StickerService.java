@@ -27,7 +27,6 @@ public class StickerService {
     @Autowired
     private final PaperRepository paperRepository;
 
-    //리펙토링 필요
     public PostStickerRes createSticker(List<PostStickerReq> postStickerReq) {
 
         Long paperId = postStickerReq.get(0).getPaperId();
@@ -38,42 +37,9 @@ public class StickerService {
             return new PostStickerRes(null,INVALID_CARD_DUE_DATE);
         }
 
-
-
-        log.info("postStickerReq = {}", postStickerReq);
-        List<Sticker> stickers = new ArrayList<Sticker>();
-        List<Sticker> deleteStickers = new ArrayList<Sticker>();
-        for (PostStickerReq stickerReq : postStickerReq) {
-            if(stickerReq.getRequestType().equals("create")) {
-                Sticker createSticker = Sticker.builder()
-                        .paperId(stickerReq.getPaperId())
-                        .rotate(stickerReq.getRotate())
-                        .scale(stickerReq.getScale())
-                        .stickerSize(stickerReq.getStickerSize())
-                        .type(stickerReq.getType())
-                        .x(stickerReq.getX())
-                        .y(stickerReq.getY())
-                        .build();
-                stickers.add(createSticker);
-            }else {
-                Sticker sticker = Sticker.builder()
-                        .paperId(stickerReq.getPaperId())
-                        .rotate(stickerReq.getRotate())
-                        .scale(stickerReq.getScale())
-                        .stickerId(stickerReq.getStickerId())
-                        .stickerSize(stickerReq.getStickerSize())
-                        .type(stickerReq.getType())
-                        .x(stickerReq.getX())
-                        .y(stickerReq.getY())
-                        .build();
-                if(stickerReq.getRequestType().equals("delete")) {
-                    deleteStickers.add(sticker);
-                }
-                if(stickerReq.getRequestType().equals("update")) {
-                    stickers.add(sticker);
-                }
-            }
-        }
+        List<Sticker> stickers = new ArrayList<>();
+        List<Sticker> deleteStickers = new ArrayList<>();
+        stickerClassification(postStickerReq, stickers, deleteStickers);
 
         log.info("stickers = {}", stickers);
         log.info("deleteStickers = {}", deleteStickers);
@@ -81,33 +47,40 @@ public class StickerService {
         stickerRepository.deleteAll(deleteStickers);
 
         if(!result.isEmpty()) {
-            return new PostStickerRes(result, BaseResponseStatus.SUCCESS);
+            List<StickerRes> stickerResList = convertStickerToResDto(result);
+            return new PostStickerRes(stickerResList, BaseResponseStatus.SUCCESS);
         }
         return new PostStickerRes(null, BaseResponseStatus.FAILED_TO_LOAD_STICKERS);
     }
 
     public GetStickerListRes selectStickerList(Long paperId) {
         List<Sticker> result = stickerRepository.findByPaperId(paperId);
+
         if(!result.isEmpty()) {
-            return new GetStickerListRes(result, BaseResponseStatus.SUCCESS);
+            List<StickerRes> stickerResList = convertStickerToResDto(result);
+            return new GetStickerListRes(stickerResList, BaseResponseStatus.SUCCESS);
         }
         return new GetStickerListRes(null, BaseResponseStatus.FAILED_TO_LOAD_STICKERS);
     }
-/*
-    public GetStickerRes selectSticker(int stickerId) {
-        Optional<Sticker> sticker = stickerRepository.findByStickerId(stickerId);
-        if(sticker.isPresent()) {
-            return new GetStickerRes(sticker.get(), BaseResponseStatus.SUCCESS);
+
+    private List<StickerRes> convertStickerToResDto(List<Sticker> stickers) {
+        List<StickerRes> stickerResList = new ArrayList<>();
+        for (Sticker sticker : stickers) {
+            StickerRes stickerRes = sticker.GetStickerRes();
+            stickerResList.add(stickerRes);
         }
-        return new GetStickerRes(null, BaseResponseStatus.FAILED_TO_LOAD_STICKER);
+
+        return stickerResList;
     }
 
-    public PutStickerRes updateSticker(PutStickerReq putStickerReq) {
-        return new PutStickerRes(stickerRepository.save(putStickerReq.getSticker()),BaseResponseStatus.SUCCESS);
+    private void stickerClassification(List<PostStickerReq> postStickerReq, List<Sticker> stickers, List<Sticker> deleteStickers) {
+        for (PostStickerReq stickerReq : postStickerReq) {
+            Sticker sticker = stickerReq.toEntity();
+            if(stickerReq.getRequestType().equals("create") || stickerReq.getRequestType().equals("update")) {
+                stickers.add(sticker);
+            } else if(stickerReq.getRequestType().equals("delete")) {
+                deleteStickers.add(sticker);
+            }
+        }
     }
-
-    public DeleteStickerRes deleteSticker(int stickerId) {
-        stickerRepository.deleteById(stickerId);
-        return new DeleteStickerRes(BaseResponseStatus.SUCCESS);
-    }*/
 }
