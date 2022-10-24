@@ -10,6 +10,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -25,7 +26,7 @@ public class CardController {
 
     @PostMapping
     @ApiOperation(value = "카드 생성", notes = "하나의 롤링페이퍼에 있는 카드를 생성 합니다. 오픈날짜 이후 카드 생성 불가")
-    public BaseResponse<PostCardResponse> createCard(@RequestBody PostCardReq card){
+    public BaseResponse<PostCardResponse> createCard(@RequestBody @Validated PostCardReq card){
         log.info("card = {}",card);
         return new BaseResponse<>(cardService.createCard(card));
     }

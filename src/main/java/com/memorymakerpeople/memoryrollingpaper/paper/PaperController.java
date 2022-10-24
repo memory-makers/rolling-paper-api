@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,7 +25,7 @@ public class PaperController {
 
     @PostMapping
     @ApiOperation(value = "롤링페이퍼 생성", notes = "현재 로그인된 아이디를 기준으로 롤링페이퍼를 생성 합니다.")
-    public BaseResponse<PostPaperRes> createPaper(@RequestBody PostPaperReq postPaperReq, @AuthenticationPrincipal UserLoginRes userLoginRes){
+    public BaseResponse<PostPaperRes> createPaper(@RequestBody @Validated PostPaperReq postPaperReq, @AuthenticationPrincipal UserLoginRes userLoginRes){
         log.info("userLoginRes = {}", userLoginRes);
         return new BaseResponse<>(paperService.createPaper(postPaperReq, userLoginRes.getEmail()));
     }
@@ -45,7 +46,7 @@ public class PaperController {
 
     @PutMapping()
     @ApiOperation(value = "롤링페이퍼 수정", notes = "롤링페이퍼를 수정합니다.")
-    public BaseResponse<PutPaperRes> updatePaper(@RequestBody PutPaperReq putPaperReq, @AuthenticationPrincipal UserLoginRes userLoginRes){
+    public BaseResponse<PutPaperRes> updatePaper(@RequestBody @Validated PutPaperReq putPaperReq, @AuthenticationPrincipal UserLoginRes userLoginRes){
         log.info("paper = {}", putPaperReq);
         return new BaseResponse<>(paperService.updatePaper(putPaperReq, userLoginRes.getEmail()));
     }
