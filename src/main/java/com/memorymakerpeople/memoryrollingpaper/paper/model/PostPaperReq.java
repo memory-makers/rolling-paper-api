@@ -3,22 +3,26 @@ package com.memorymakerpeople.memoryrollingpaper.paper.model;
 import com.memorymakerpeople.memoryrollingpaper.config.BaseResponseStatus;
 import lombok.*;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import java.sql.Timestamp;
 
 @Getter
 @ToString
 public class PostPaperReq {
-    private Long paperId;
+    @NotEmpty
     private String paperTitle;
+    @NotBlank
     private String theme;
     private String paperUrl;
+    @NotBlank
     private String deleteYn;
     private String userId;
+    @NotEmpty
     private Timestamp dueDate;
 
     public Paper toEntity() {
         return Paper.builder().
-                paperId(this.paperId).
                 paperTitle(this.paperTitle).
                 theme(this.theme).
                 paperUrl(this.paperUrl).
