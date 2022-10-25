@@ -26,11 +26,13 @@ public class Paper {
     private String theme;
     private String paperUrl;
     private String deleteYn;
-    private Long userId;
+    private String userId;
+    private Timestamp createdAt;
+    private Timestamp updatedAt;
     private Timestamp dueDate;
 
     @Builder
-    public Paper(Long paperId, String paperTitle, String theme, String paperUrl, String deleteYn, Long userId, Timestamp dueDate) {
+    public Paper(Long paperId, String paperTitle, String theme, String paperUrl, String deleteYn, String userId, Timestamp dueDate) {
         this.paperId = paperId;
         this.paperTitle = paperTitle;
         this.theme = theme;
@@ -52,6 +54,10 @@ public class Paper {
                 updatedAt(this.updatedAt).
                 dueDate(this.dueDate).
                 build();
+    }
+
+    public void softRemovePaper() {
+        this.deleteYn = "Y";
     }
 
 }

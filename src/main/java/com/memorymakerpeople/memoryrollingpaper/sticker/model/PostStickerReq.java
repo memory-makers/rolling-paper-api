@@ -2,6 +2,9 @@ package com.memorymakerpeople.memoryrollingpaper.sticker.model;
 
 import lombok.*;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Positive;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -9,13 +12,24 @@ import lombok.*;
 @ToString
 public class PostStickerReq {
     private Long stickerId;
+    @NotBlank
+    @Positive
     private int stickerSize;
+    @NotBlank
     private String type;
+    @NotBlank
     private float rotate;
+    @NotBlank
     private float x;
+    @NotBlank
     private float y;
+    @NotBlank
+    @Positive
     private float scale;
+    @NotBlank
+    @Positive
     private Long paperId;
+    @NotBlank
     private String requestType;
 
     @Builder

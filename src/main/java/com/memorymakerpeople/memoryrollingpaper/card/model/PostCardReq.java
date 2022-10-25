@@ -1,9 +1,12 @@
 package com.memorymakerpeople.memoryrollingpaper.card.model;
 
 import lombok.*;
+import org.hibernate.validator.constraints.Range;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Positive;
 
 @Getter
 @Setter
@@ -11,17 +14,18 @@ import javax.validation.constraints.NotEmpty;
 @NoArgsConstructor
 @ToString
 public class PostCardReq {
-    @NotEmpty
+    @NotBlank
     private String cardText;
     @NotBlank
     private String cardColor;
     @NotBlank
+    @Positive
     private Long paperId;
-    @NotEmpty
+    @NotBlank
     private String fontStyle;
-    @NotEmpty
+    @NotBlank
     private String fontColor;
-    @NotEmpty
+    @NotBlank
     private String cardWriter;
 
 
