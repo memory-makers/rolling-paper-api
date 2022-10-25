@@ -71,7 +71,7 @@ public class PaperService {
             Optional<Paper> paperOptional = paperRepository.findByPaperId(paperId);
 
             if (paperOptional.isPresent()) {
-                paperOptional.get().setDeleteYn("Y");
+                paperOptional.get().softRemovePaper();
                 Paper savedPaper = paperRepository.save(paperOptional.get());
 
                 return new DeletePaperRes(savedPaper.getPaperId(), BaseResponseStatus.SUCCESS);

@@ -10,15 +10,14 @@ import java.sql.Timestamp;
 @Getter
 @ToString
 public class PostPaperReq {
-    @NotEmpty
+    @NotBlank
     private String paperTitle;
     @NotBlank
     private String theme;
     private String paperUrl;
-    @NotBlank
     private String deleteYn;
     private String userId;
-    @NotEmpty
+    @NotBlank
     private Timestamp dueDate;
 
     public Paper toEntity() {
