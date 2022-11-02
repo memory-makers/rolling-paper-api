@@ -3,10 +3,7 @@ package com.memorymakerpeople.memoryrollingpaper.card.model;
 import lombok.*;
 import org.hibernate.validator.constraints.Range;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Positive;
+import javax.validation.constraints.*;
 
 @Getter
 @Setter
@@ -18,7 +15,7 @@ public class PostCardReq {
     private String cardText;
     @NotBlank
     private String cardColor;
-    @NotBlank
+    @NotNull
     @Positive
     private Long paperId;
     @NotBlank

@@ -5,6 +5,7 @@ import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 
 @Getter
@@ -17,7 +18,7 @@ public class PostPaperReq {
     private String paperUrl;
     private String deleteYn;
     private String userId;
-    @NotBlank
+    @NotNull
     private Timestamp dueDate;
 
     public Paper toEntity() {

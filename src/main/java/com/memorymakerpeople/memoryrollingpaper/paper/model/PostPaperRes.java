@@ -10,6 +10,7 @@ import lombok.*;
 @ToString
 public class PostPaperRes {
     private Long paperId;
+    private String paperUrl;
     private BaseResponseStatus status;
 
 }

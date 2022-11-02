@@ -25,7 +25,7 @@ public class PaperService {
     public PostPaperRes createPaper(PostPaperReq postPaperReq, String userId) {
         postPaperReq.changeIdAndUrl(userId, UUID.randomUUID().toString());
         Paper paper = paperRepository.save(postPaperReq.toEntity());
-        return new PostPaperRes(paper.getPaperId(), BaseResponseStatus.SUCCESS);
+        return new PostPaperRes(paper.getPaperId(), paper.getPaperUrl(), BaseResponseStatus.SUCCESS);
     }
 
     public List<Paper> selectPaper(String id){
@@ -49,7 +49,7 @@ public class PaperService {
             Optional<Paper> paper = paperRepository.findByPaperId(putPaperReq.getPaperId());
 
             if(paper.isPresent()) {
-                Paper savedPaper = paperRepository.save(putPaperReq.toEntity());
+                Paper savedPaper = paperRepository.save(putPaperReq.toEntity(email));
 
                 return new PutPaperRes(savedPaper.getPaperId(), BaseResponseStatus.SUCCESS);
             }

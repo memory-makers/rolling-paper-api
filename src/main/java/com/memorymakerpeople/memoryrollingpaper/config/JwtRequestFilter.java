@@ -35,13 +35,13 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
         String username = null;
         String jwtToken = null;
-        //log.info("requestTokenHeader = {}", requestTokenHeader);
+        //log.debug("requestTokenHeader = {}", requestTokenHeader);
         if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
-            log.info("========================================= jwtToken = {}", requestTokenHeader.substring(7));
+            log.debug("========================================= jwtToken = {}", requestTokenHeader.substring(7));
             jwtToken = requestTokenHeader.substring(7);
             try {
                 username = jwtTokenUtil.getUsernameFromToken(jwtToken);
-                log.info("username = {}", username);
+                log.debug("username = {}", username);
             } catch (IllegalArgumentException e) {
                 log.error("Unable to get JWT Token");
             } catch (ExpiredJwtException e) {
@@ -56,10 +56,10 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
             UserDetails userDetails = this.jwtUserDetailsService.loadUserByUsername(username);
 
-            log.info("userDetails = {}", userDetails);
+            log.debug("userDetails = {}", userDetails);
             // 토큰이 유효한 경우.. 수동으로 인증을 설정하도록 Spring Security를 구성
             if (jwtTokenUtil.validateToken(jwtToken, userDetails)) {
-                log.info("Token Validate Complete");
+                log.debug("Token Validate Complete");
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities());
                 usernamePasswordAuthenticationToken

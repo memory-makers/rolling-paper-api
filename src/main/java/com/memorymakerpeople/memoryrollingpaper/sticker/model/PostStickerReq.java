@@ -3,6 +3,7 @@ package com.memorymakerpeople.memoryrollingpaper.sticker.model;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
 @Getter
@@ -26,7 +27,7 @@ public class PostStickerReq {
     @NotBlank
     @Positive
     private float scale;
-    @NotBlank
+    @NotNull
     @Positive
     private Long paperId;
     @NotBlank

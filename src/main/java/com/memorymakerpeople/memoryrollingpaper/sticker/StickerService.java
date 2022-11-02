@@ -38,8 +38,8 @@ public class StickerService {
         List<Sticker> deleteStickers = new ArrayList<>();
         stickerClassification(postStickerReq, stickers, deleteStickers);
 
-        log.info("stickers = {}", stickers);
-        log.info("deleteStickers = {}", deleteStickers);
+        log.debug("stickers = {}", stickers);
+        log.debug("deleteStickers = {}", deleteStickers);
         List<Sticker> result = stickerRepository.saveAll(stickers);
         stickerRepository.deleteAll(deleteStickers);
 

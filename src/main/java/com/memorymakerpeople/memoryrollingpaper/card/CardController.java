@@ -27,14 +27,14 @@ public class CardController {
     @PostMapping
     @ApiOperation(value = "카드 생성", notes = "하나의 롤링페이퍼에 있는 카드를 생성 합니다. 오픈날짜 이후 카드 생성 불가")
     public BaseResponse<PostCardResponse> createCard(@RequestBody @Validated PostCardReq card){
-        log.info("card = {}",card);
+        log.debug("card = {}",card);
         return new BaseResponse<>(cardService.createCard(card));
     }
 
     @ApiOperation(value = "카드 조회", notes = "PaperId를 기준으로 카드를 조회합니다.")
     @GetMapping("/{paperId}")
     public BaseResponse<GetCardResponse> getCard(@PathVariable Long paperId) {
-        log.info("paperId = {}",paperId);
+        log.debug("paperId = {}",paperId);
         return new BaseResponse<>(cardService.getCardList(paperId));
     }
 }
