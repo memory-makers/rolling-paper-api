@@ -18,6 +18,8 @@ import org.springframework.web.client.RestTemplate;
 
 import java.nio.charset.StandardCharsets;
 
+import static com.memorymakerpeople.memoryrollingpaper.config.BaseResponseStatus.*;
+
 
 @Service
 @RequiredArgsConstructor
@@ -33,7 +35,7 @@ public class MemberService {
     public PutMemberRes updateNickname(UserLoginRes userLoginRes, String nickname) {
         Member member = memberRepository.findByEmail(userLoginRes.getEmail());
         member.setNickname(nickname);
-        return new PutMemberRes(memberRepository.save(member), BaseResponseStatus.SUCCESS);
+        return new PutMemberRes(memberRepository.save(member), SUCCESS);
     }
 
     //리펙토링 필요

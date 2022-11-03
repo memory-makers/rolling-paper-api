@@ -10,7 +10,4 @@ import lombok.*;
 @ToString
 public class PostCardResponse {
     private Long cardId;
-    //private Card card; //리펙토링
-    private BaseResponseStatus status;
-
 }

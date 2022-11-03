@@ -1,10 +1,8 @@
 package com.memorymakerpeople.memoryrollingpaper.card;
 
-import com.memorymakerpeople.memoryrollingpaper.card.model.Card;
-import com.memorymakerpeople.memoryrollingpaper.card.model.GetCardResponse;
-import com.memorymakerpeople.memoryrollingpaper.card.model.PostCardReq;
-import com.memorymakerpeople.memoryrollingpaper.card.model.PostCardResponse;
+import com.memorymakerpeople.memoryrollingpaper.card.model.*;
 import com.memorymakerpeople.memoryrollingpaper.config.BaseResponseStatus;
+import com.memorymakerpeople.memoryrollingpaper.exception.CustomException;
 import com.memorymakerpeople.memoryrollingpaper.paper.PaperRepository;
 import com.memorymakerpeople.memoryrollingpaper.paper.model.Paper;
 import com.memorymakerpeople.memoryrollingpaper.utils.ValidUtil;
@@ -14,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,11 +28,22 @@ public class CardService {
     //리펙토링 필요
     public GetCardResponse getCardList(Long paperId){
         List<Card> cardList = cardRepository.findByPaperId(paperId);
-        if(ObjectUtils.isEmpty(cardList)) {
-            return new GetCardResponse(null, BaseResponseStatus.EMPTY_CARD_LIST);
-        }
 
-        return new GetCardResponse(cardList, BaseResponseStatus.SUCCESS);
+        if(cardList.isEmpty()) {
+            return null;
+        }
+        List<CardRes> resultList = converCardToCardRes(cardList);
+        return new GetCardResponse(resultList);
+    }
+
+    private List<CardRes> converCardToCardRes(List<Card> cardList) {
+        List<CardRes> resultList = new ArrayList<>();
+
+        for (Card card : cardList) {
+            CardRes cardRes = card.GetCardRes();
+            resultList.add(cardRes);
+        }
+        return resultList;
     }
 
     //리펙토링 필요
@@ -43,12 +53,12 @@ public class CardService {
         BaseResponseStatus INVALID_CARD_DUE_DATE = ValidUtil.validCardDueDate(Paper);
 
         if (INVALID_CARD_DUE_DATE != null) {
-            return new PostCardResponse(null,INVALID_CARD_DUE_DATE);
+            throw new CustomException(INVALID_CARD_DUE_DATE);
         }
 
         Card save = cardRepository.save(card.toEntity());
         Long result = save.getCardId();
 
-        return new PostCardResponse(result, BaseResponseStatus.SUCCESS);
+        return new PostCardResponse(result);
     }
 }

@@ -28,7 +28,7 @@ public class BaseResponse<T> {
         this.result = result;
     }
 
-    public BaseResponse(UserLoginRes userLoginRes, BaseResponseStatus status) {
+    public BaseResponse(BaseResponseStatus status) {
         this.isSuccess = status.isSuccess();
         this.message = status.getMessage();
         this.code = status.getCode();

@@ -11,7 +11,5 @@ import java.util.List;
 @NoArgsConstructor
 @ToString
 public class GetCardResponse {
-    private List<Card> card;
-    private BaseResponseStatus status;
-
+    private List<CardRes> card;
 }

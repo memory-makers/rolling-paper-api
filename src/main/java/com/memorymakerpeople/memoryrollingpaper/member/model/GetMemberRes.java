@@ -13,5 +13,4 @@ import lombok.Setter;
 @NoArgsConstructor
 public class GetMemberRes {
     private UserLoginRes loginRes;
-    private BaseResponseStatus status;
 }

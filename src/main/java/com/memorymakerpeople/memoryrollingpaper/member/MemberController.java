@@ -3,6 +3,7 @@ package com.memorymakerpeople.memoryrollingpaper.member;
 import com.memorymakerpeople.memoryrollingpaper.authLogin.UserLoginRes;
 import com.memorymakerpeople.memoryrollingpaper.config.BaseResponse;
 import com.memorymakerpeople.memoryrollingpaper.config.BaseResponseStatus;
+import com.memorymakerpeople.memoryrollingpaper.exception.CustomException;
 import com.memorymakerpeople.memoryrollingpaper.member.model.GetLogoutRes;
 import com.memorymakerpeople.memoryrollingpaper.member.model.GetMemberRes;
 import com.memorymakerpeople.memoryrollingpaper.member.model.PutMemberReq;
@@ -22,6 +23,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import java.net.URI;
 
+import static com.memorymakerpeople.memoryrollingpaper.config.BaseResponseStatus.*;
+
 @RestController
 @RequiredArgsConstructor
 @Api(tags = {"회원관리 API"})
@@ -36,9 +39,9 @@ public class MemberController {
     public BaseResponse<GetMemberRes> getLoginUser(@AuthenticationPrincipal UserLoginRes userLoginRes) {
         log.debug("UserLoginRes = {}", userLoginRes);
         if (ObjectUtils.isEmpty(userLoginRes)) {
-            return new BaseResponse<GetMemberRes>(null, BaseResponseStatus.GET_USER_INFO_NULL);
+            throw new CustomException(GET_USER_INFO_NULL);
         }
-        return new BaseResponse<GetMemberRes>(userLoginRes, BaseResponseStatus.SUCCESS);
+        return new BaseResponse<GetMemberRes>(userLoginRes);
     }
 
     @ApiOperation(value = "닉네임 설정", notes = "닉네임 설정, username이나 id중에 식별자와 변경할 nickname을 파라미터로 전달")

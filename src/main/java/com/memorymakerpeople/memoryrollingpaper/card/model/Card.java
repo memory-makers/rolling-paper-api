@@ -1,4 +1,5 @@
 package com.memorymakerpeople.memoryrollingpaper.card.model;
+import com.memorymakerpeople.memoryrollingpaper.sticker.model.StickerRes;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -34,5 +35,17 @@ public class Card {
         this.fontStyle = fontStyle;
         this.fontColor = fontColor;
         this.cardWriter = cardWriter;
+    }
+
+    public CardRes GetCardRes() {
+        return new CardRes.CardResBuilder()
+                .cardId(this.cardId)
+                .cardText(this.cardText)
+                .cardColor(this.cardColor)
+                .paperId(this.paperId)
+                .fontStyle(this.fontStyle)
+                .fontColor(this.fontColor)
+                .cardWriter(this.cardWriter)
+                .build();
     }
 }

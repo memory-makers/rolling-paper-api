@@ -7,12 +7,13 @@ public enum BaseResponseStatus {
     SUCCESS(true, 1000, "요청 성공."),
 
     //    2000 : Request 오류
-    REQUEST_ERROR(false, 2000, "입력값을 확인해주세요."),
+    REQUEST_ERROR(false, 2000, "적합하지 않은 입력값입니다. 입력값을 확인해주세요."),
     EMPTY_JWT(false, 2001, "JWT를 입력해주세요."),
     INVALID_JWT(false, 2002, "유효하지 않은 JWT입니다."),
     INVALID_USER_JWT(false, 2003, "권한이 없는 유저의 접근입니다."),
     INVALID_USER_STATUS(false, 2004, "삭제되거나 휴면인 계정의 접근입니다."),
     INVALID_USER_PASSWORD(false, 2005, "잘못된 비밀번호입니다."),
+    INVALID_TYPE_MISMATCH(false, 2006, "잘못된 타입의 입력값입니다. 입력값을 확인해주세요."),
 
     // [PATCH] /users
     PATCH_PRE_DELETED_USER(false, 2040, "이미 탈퇴한 회원입니다."),
@@ -30,7 +31,7 @@ public enum BaseResponseStatus {
     FAILED_TO_PAPER_UPDATE(false, 2051, "본인의 게시물이 아니면 수정할 수 없습니다."),
 
     // [GET] /Card
-    EMPTY_CARD_LIST(false, 2201, "생성된 카드가 없습니다."),
+    EMPTY_CARD_LIST(true, 2201, "생성된 카드가 없습니다."),
 
     // [POST] /Card
     INVALID_CARD_DUE_DATE(false,2202,"해당 롤링페이퍼는 기간이 지났음으로 더 이상 수정이나 삭제가 불가능합니다."),
@@ -73,8 +74,8 @@ public enum BaseResponseStatus {
     NULL_ID(false, 5007, "아이디가 존재하지 않습니다."),
     USER_NOT_MATCH(false, 5008, "아이디가 존재하지 않습니다."),
 
-    // 7000
-    FAIL(false, 7000, "실패.");
+    // 9000
+    FAIL(false, 9000, "실패.");
 
 
     private final boolean isSuccess;
