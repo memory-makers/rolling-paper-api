@@ -2,6 +2,7 @@ package com.memorymakerpeople.memoryrollingpaper.sticker;
 
 import com.memorymakerpeople.memoryrollingpaper.card.model.PostCardResponse;
 import com.memorymakerpeople.memoryrollingpaper.config.BaseResponseStatus;
+import com.memorymakerpeople.memoryrollingpaper.exception.CustomException;
 import com.memorymakerpeople.memoryrollingpaper.paper.PaperRepository;
 import com.memorymakerpeople.memoryrollingpaper.paper.model.Paper;
 import com.memorymakerpeople.memoryrollingpaper.sticker.model.*;
@@ -12,9 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static com.memorymakerpeople.memoryrollingpaper.config.BaseResponseStatus.*;
 
 @Service
 @Slf4j
@@ -24,85 +28,70 @@ public class StickerService {
     private final StickerRepository stickerRepository;
     private final PaperRepository paperRepository;
 
-    //리펙토링 필요
-    public PostStickerRes createSticker(List<PostStickerReq> postStickerReq) {
+    public PostStickerRes createSticker(List<PostStickerReq> postStickerReq, Long paperId) {
+        if(postStickerReq.isEmpty()) {
+            stickerRepository.deleteAllById(Collections.singleton(paperId));
+            return null;
+        }
+        Optional<Paper> optionalPaper = paperRepository.findByPaperId(paperId);
 
-        Long paperId = postStickerReq.get(0).getPaperId();
-        Optional<Paper> Paper = paperRepository.findByPaperId(paperId);
-
-        BaseResponseStatus INVALID_CARD_DUE_DATE = ValidUtil.validCardDueDate(Paper);
-        if (INVALID_CARD_DUE_DATE != null) {
-            return new PostStickerRes(null,INVALID_CARD_DUE_DATE);
+        if(optionalPaper.isEmpty()) {
+            throw new CustomException(FOUND_PAPER_INFO_NULL);
+        }
+        if (ValidUtil.validCardDueDate(optionalPaper.get())) {
+            throw new CustomException(INVALID_CARD_DUE_DATE);
         }
 
-        log.info("postStickerReq = {}", postStickerReq);
-        List<Sticker> stickers = new ArrayList<Sticker>();
-        List<Sticker> deleteStickers = new ArrayList<Sticker>();
-        for (PostStickerReq stickerReq : postStickerReq) {
-            if(stickerReq.getRequestType().equals("create")) {
-                Sticker createSticker = Sticker.builder()
-                        .paperId(stickerReq.getPaperId())
-                        .rotate(stickerReq.getRotate())
-                        .scale(stickerReq.getScale())
-                        .stickerSize(stickerReq.getStickerSize())
-                        .type(stickerReq.getType())
-                        .x(stickerReq.getX())
-                        .y(stickerReq.getY())
-                        .build();
-                stickers.add(createSticker);
-            }else {
-                Sticker sticker = Sticker.builder()
-                        .paperId(stickerReq.getPaperId())
-                        .rotate(stickerReq.getRotate())
-                        .scale(stickerReq.getScale())
-                        .stickerId(stickerReq.getStickerId())
-                        .stickerSize(stickerReq.getStickerSize())
-                        .type(stickerReq.getType())
-                        .x(stickerReq.getX())
-                        .y(stickerReq.getY())
-                        .build();
-                if(stickerReq.getRequestType().equals("delete")) {
-                    deleteStickers.add(sticker);
-                }
-                if(stickerReq.getRequestType().equals("update")) {
-                    stickers.add(sticker);
-                }
-            }
+        List<Sticker> result = stickerClassification(postStickerReq);
+
+        if(result.isEmpty()) {
+            return null;
         }
 
-        log.info("stickers = {}", stickers);
-        log.info("deleteStickers = {}", deleteStickers);
-        List<Sticker> result = stickerRepository.saveAll(stickers);
-        stickerRepository.deleteAll(deleteStickers);
-
-        if(!result.isEmpty()) {
-            return new PostStickerRes(result, BaseResponseStatus.SUCCESS);
-        }
-        return new PostStickerRes(null, BaseResponseStatus.FAILED_TO_LOAD_STICKERS);
+        List<StickerRes> stickerResList = convertStickerToResDto(result);
+        return new PostStickerRes(stickerResList);
     }
 
     public GetStickerListRes selectStickerList(Long paperId) {
         List<Sticker> result = stickerRepository.findByPaperId(paperId);
-        if(!result.isEmpty()) {
-            return new GetStickerListRes(result, BaseResponseStatus.SUCCESS);
+
+        if(result.isEmpty()) {
+            return null;
         }
-        return new GetStickerListRes(null, BaseResponseStatus.FAILED_TO_LOAD_STICKERS);
-    }
-/*
-    public GetStickerRes selectSticker(int stickerId) {
-        Optional<Sticker> sticker = stickerRepository.findByStickerId(stickerId);
-        if(sticker.isPresent()) {
-            return new GetStickerRes(sticker.get(), BaseResponseStatus.SUCCESS);
-        }
-        return new GetStickerRes(null, BaseResponseStatus.FAILED_TO_LOAD_STICKER);
+
+        List<StickerRes> stickerResList = convertStickerToResDto(result);
+        return new GetStickerListRes(stickerResList);
     }
 
-    public PutStickerRes updateSticker(PutStickerReq putStickerReq) {
-        return new PutStickerRes(stickerRepository.save(putStickerReq.getSticker()),BaseResponseStatus.SUCCESS);
+    private List<StickerRes> convertStickerToResDto(List<Sticker> stickers) {
+        List<StickerRes> stickerResList = new ArrayList<>();
+        for (Sticker sticker : stickers) {
+            StickerRes stickerRes = sticker.GetStickerRes();
+            stickerResList.add(stickerRes);
+        }
+
+        return stickerResList;
     }
 
-    public DeleteStickerRes deleteSticker(int stickerId) {
-        stickerRepository.deleteById(stickerId);
-        return new DeleteStickerRes(BaseResponseStatus.SUCCESS);
-    }*/
+    private List<Sticker> stickerClassification(List<PostStickerReq> postStickerReq) {
+        List<Sticker> stickers = new ArrayList<>();
+        List<Sticker> deleteStickers = new ArrayList<>();
+
+        for (PostStickerReq stickerReq : postStickerReq) {
+            Sticker sticker = stickerReq.toEntity();
+
+            if(stickerReq.getRequestType().equals("create") || stickerReq.getRequestType().equals("update")) {
+                stickers.add(sticker);
+            } else if(stickerReq.getRequestType().equals("delete")) {
+                deleteStickers.add(sticker);
+            }
+        }
+
+        log.debug("stickers = {}", stickers);
+        log.debug("deleteStickers = {}", deleteStickers);
+        List<Sticker> result = stickerRepository.saveAll(stickers);
+        stickerRepository.deleteAll(deleteStickers);
+
+        return result;
+    }
 }

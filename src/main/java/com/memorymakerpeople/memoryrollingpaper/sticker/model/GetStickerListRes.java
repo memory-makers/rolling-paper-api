@@ -11,6 +11,5 @@ import java.util.List;
 @NoArgsConstructor
 @ToString
 public class GetStickerListRes {
-    private List<Sticker> stickers;
-    private BaseResponseStatus status;
+    private List<StickerRes> stickers;
 }

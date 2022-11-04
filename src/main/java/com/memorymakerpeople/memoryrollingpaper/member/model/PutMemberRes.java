@@ -11,6 +11,5 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PutMemberRes {
-    private Member member;
-    private BaseResponseStatus status;
+    private Long memberId;
 }

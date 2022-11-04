@@ -9,7 +9,6 @@ import lombok.*;
 @NoArgsConstructor
 @ToString
 public class DeletePaperRes {
-    private Paper paper;
-    private BaseResponseStatus status;
+    private Long paperId;
 
 }

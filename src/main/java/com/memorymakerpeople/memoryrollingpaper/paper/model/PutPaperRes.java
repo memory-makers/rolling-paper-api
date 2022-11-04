@@ -9,7 +9,6 @@ import lombok.*;
 @NoArgsConstructor
 @ToString
 public class PutPaperRes {
-    private Paper paper;
-    private BaseResponseStatus status;
+    private Long paperId;
 
 }

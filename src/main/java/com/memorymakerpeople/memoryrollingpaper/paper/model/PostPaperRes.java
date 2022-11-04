@@ -9,7 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 @ToString
 public class PostPaperRes {
-    private Paper paper;
-    private BaseResponseStatus status;
+    private Long paperId;
+    private String paperUrl;
 
 }

@@ -23,7 +23,7 @@ public class JwtTokenUtil implements Serializable {
 
     //jwt 토큰에서 사용자 이름 검색.
     public String getUsernameFromToken(String token) {
-        log.info("token = {}", token);
+        log.debug("token = {}", token);
         return getClaimFromToken(token, Claims::getSubject);
     }
 
@@ -34,7 +34,7 @@ public class JwtTokenUtil implements Serializable {
 
     public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = getAllClaimsFromToken(token);
-        log.info("claims = {}", claims);
+        log.debug("claims = {}", claims);
         return claimsResolver.apply(claims);
     }
 
@@ -61,55 +61,17 @@ public class JwtTokenUtil implements Serializable {
         return doGenerateToken(claims, userLoginRes.getUsername());
     }
 
-    //Jwt 생성.
-    /*public String generateTokenForOAuth(String social, String email, String nickname) {
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("social", social);
-        claims.put("email", email);
-        claims.put("nickname", nickname);
-
-        return doGenerateToken(claims, email);
-    }*/
-
     //Jwt 발급.
     private String doGenerateToken(Map<String, Object> claims, String subject) {
         return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis() * 1000))
                 .setExpiration(new Date((System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000) * 1000))
                 .signWith(SignatureAlgorithm.HS512, secret).compact();
     }
-//    private String doGenerateToken(UserDetails userDetails) {
-//        UserLoginRes userLoginRes = (UserLoginRes) userDetails;
-//        Map<String, Object> idx = new HashMap<>();
-//        Map<String, Object> nickname = new HashMap<>();
-//        Map<String, Object> claims = new HashMap<>();
-//        nickname.put("idx", userLoginRes.getIdx());
-//        nickname.put("nickname", userLoginRes.getNickname());
-//        nickname.put("username", userDetails.getUsername());
-//        return Jwts.builder().setClaims(idx).setClaims(nickname).setIssuedAt(new Date(System.currentTimeMillis()))
-//                .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
-//                .signWith(SignatureAlgorithm.HS512, secret).compact();
-//    }
 
     // 토큰유효성 + 만료일자 확인.
     public Boolean validateToken(String token, UserDetails userDetails) {
         final String username = getUsernameFromToken(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
-//        try {
-//            final String username = getUsernameFromToken(token);
-//            return (username.equals(userDetails.getUsername()));
-//        } catch (SignatureException ex) {
-//            System.out.println("Invalid JWT Signature");
-//            return false;
-//        } catch (ExpiredJwtException ex) {
-//            System.out.println("Expired JWT token");
-//            return false;
-//        } catch (UnsupportedJwtException ex) {
-//            System.out.println("Unsupported JWT exception");
-//            return false;
-//        } catch (IllegalArgumentException ex) {
-//            System.out.println("Jwt claims string is empty");
-//            return false;
-//        }
     }
 }
 

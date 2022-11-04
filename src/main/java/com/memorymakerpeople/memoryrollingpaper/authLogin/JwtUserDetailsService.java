@@ -21,10 +21,10 @@ public class JwtUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         UserLoginRes userLoginRes = memberDao.findByEmail(username);
-        log.info("userLoginRes = {}", userLoginRes);
+        log.debug("userLoginRes = {}", userLoginRes);
 
         if (userLoginRes != null) {
-            log.info("유저 정보 반환");
+            log.debug("유저 정보 반환");
             return new UserLoginRes(userLoginRes.getId(), userLoginRes.getEmail(), userLoginRes.getPassword(), userLoginRes.getNickname(),
                     new ArrayList<>());
         } else {

@@ -44,7 +44,7 @@ public class MemberDao {
 
 
     public UserLoginRes findByEmail(String email) {
-        log.info("email = {}", email);
+        log.debug("email = {}", email);
         String getEmailQuery = "SELECT * FROM tbl_user LEFT OUTER JOIN authority on tbl_user.id=authority.member_idx WHERE email=?";
 
         return this.jdbcTemplate.queryForObject(getEmailQuery
