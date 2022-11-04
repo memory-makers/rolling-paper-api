@@ -19,7 +19,6 @@ public class GetPaperRes {
     private Timestamp dueDate;
     private Timestamp createdAt;
     private Timestamp updatedAt;
-    private BaseResponseStatus status;
 
     @Builder
     public GetPaperRes(Long paperId, String paperTitle, String theme, String paperUrl, String deleteYn, String userId,Timestamp createdAt,Timestamp updatedAt, Timestamp dueDate){
@@ -32,9 +31,5 @@ public class GetPaperRes {
         this.updatedAt = updatedAt;
         this.userId = userId;
         this.dueDate = dueDate;
-    }
-
-    public void updateStatus(BaseResponseStatus status) {
-        this.status = status;
     }
 }

@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.memorymakerpeople.memoryrollingpaper.config.BaseResponseStatus.INVALID_CARD_DUE_DATE;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -25,34 +27,24 @@ public class CardService {
 
     private final PaperRepository paperRepository;
 
-    //리펙토링 필요
     public GetCardResponse getCardList(Long paperId){
         List<Card> cardList = cardRepository.findByPaperId(paperId);
 
         if(cardList.isEmpty()) {
             return null;
         }
-        List<CardRes> resultList = converCardToCardRes(cardList);
+        List<CardRes> resultList = convertCardToCardRes(cardList);
         return new GetCardResponse(resultList);
     }
 
-    private List<CardRes> converCardToCardRes(List<Card> cardList) {
-        List<CardRes> resultList = new ArrayList<>();
-
-        for (Card card : cardList) {
-            CardRes cardRes = card.GetCardRes();
-            resultList.add(cardRes);
-        }
-        return resultList;
-    }
-
-    //리펙토링 필요
     public PostCardResponse createCard(PostCardReq card) {
+        Optional<Paper> optionalPaper = paperRepository.findByPaperId(card.getPaperId());
 
-        Optional<Paper> Paper = paperRepository.findByPaperId(card.getPaperId());
-        BaseResponseStatus INVALID_CARD_DUE_DATE = ValidUtil.validCardDueDate(Paper);
-
-        if (INVALID_CARD_DUE_DATE != null) {
+        if(optionalPaper.isEmpty()) {
+            throw new CustomException(BaseResponseStatus.FOUND_PAPER_INFO_NULL);
+        }
+        Paper paper = optionalPaper.get();
+        if (ValidUtil.validCardDueDate(paper)) {
             throw new CustomException(INVALID_CARD_DUE_DATE);
         }
 
@@ -60,5 +52,15 @@ public class CardService {
         Long result = save.getCardId();
 
         return new PostCardResponse(result);
+    }
+
+    private List<CardRes> convertCardToCardRes(List<Card> cardList) {
+        List<CardRes> resultList = new ArrayList<>();
+
+        for (Card card : cardList) {
+            CardRes cardRes = card.GetCardRes();
+            resultList.add(cardRes);
+        }
+        return resultList;
     }
 }

@@ -11,6 +11,5 @@ import lombok.*;
 @ToString
 public class GetpaperIdRes {
     private Long paperId;
-    private BaseResponseStatus status;
 
 }

@@ -38,10 +38,13 @@ public class MemberController {
     @GetMapping
     public BaseResponse<GetMemberRes> getLoginUser(@AuthenticationPrincipal UserLoginRes userLoginRes) {
         log.debug("UserLoginRes = {}", userLoginRes);
+
         if (ObjectUtils.isEmpty(userLoginRes)) {
             throw new CustomException(GET_USER_INFO_NULL);
         }
-        return new BaseResponse<GetMemberRes>(userLoginRes);
+        GetMemberRes memberRes = new GetMemberRes(userLoginRes);
+
+        return new BaseResponse<>(memberRes);
     }
 
     @ApiOperation(value = "닉네임 설정", notes = "닉네임 설정, username이나 id중에 식별자와 변경할 nickname을 파라미터로 전달")
@@ -49,14 +52,20 @@ public class MemberController {
     public BaseResponse<PutMemberRes> setNickname(@AuthenticationPrincipal UserLoginRes userLoginRes, @RequestBody PutMemberReq memberReq) {
         log.debug("UserLoginRes = {}", userLoginRes);
         log.debug("memberReq = {}", memberReq);
-        return new BaseResponse<>(memberService.updateNickname(userLoginRes, memberReq.getNickname()));
+
+        PutMemberRes putMemberRes = memberService.updateNickname(userLoginRes, memberReq.getNickname());
+
+        return new BaseResponse<>(putMemberRes);
     }
 
     @ApiOperation(value="사용자 닉네임 조회", notes = "현재 접속한 사람의 사용자 닉네임 조회을 조회합니다.")
     @GetMapping("/nickname")
-    public String getNickname(@AuthenticationPrincipal UserLoginRes loginRes) {
+    public BaseResponse<String> getNickname(@AuthenticationPrincipal UserLoginRes loginRes) {
         log.debug("loginRes = {}", loginRes);
-        return memberService.selectNickname(loginRes.getEmail());
+
+        String result = memberService.selectNickname(loginRes.getEmail());
+
+        return new BaseResponse<>(result);
     }
 
 }

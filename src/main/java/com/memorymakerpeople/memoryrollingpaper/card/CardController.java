@@ -34,9 +34,6 @@ public class CardController {
         log.debug("card = {}",card);
         PostCardResponse cardList = cardService.createCard(card);
 
-        if(ObjectUtils.isEmpty(cardList)) {
-            throw new CustomException(EMPTY_CARD_LIST);
-        }
         return new BaseResponse<>(cardList);
     }
 
@@ -46,9 +43,6 @@ public class CardController {
         log.debug("paperId = {}",paperId);
         GetCardResponse cardList = cardService.getCardList(paperId);
 
-        if(ObjectUtils.isEmpty(cardList)) {
-            throw new CustomException(EMPTY_CARD_LIST);
-        }
         return new BaseResponse<>(cardList);
     }
 }

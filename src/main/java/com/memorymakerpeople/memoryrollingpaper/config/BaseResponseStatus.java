@@ -15,20 +15,26 @@ public enum BaseResponseStatus {
     INVALID_USER_PASSWORD(false, 2005, "잘못된 비밀번호입니다."),
     INVALID_TYPE_MISMATCH(false, 2006, "잘못된 타입의 입력값입니다. 입력값을 확인해주세요."),
 
-    // [PATCH] /users
+    // [PATCH] /membersdsad
     PATCH_PRE_DELETED_USER(false, 2040, "이미 탈퇴한 회원입니다."),
 
-    // [POST] /users
-    POST_USER_INFO_NULL(false, 2041, "빠진 가입 정보가 없는지 확인해주세요."),
+    // [PUT] /members
+    FOUND_USER_INFO_NULL(false, 2041, "회원 정보를 찾을 수 없습니다."),
 
-    // [POST] /users
-    GET_USER_INFO_NULL(false, 2042, "로그인 후 다시 이용해주세요."),
+    // [POST] /members
+    POST_USER_INFO_NULL(false, 2042, "빠진 가입 정보가 없는지 확인해주세요."),
+
+    // [POST] /members
+    GET_USER_INFO_NULL(false, 2043, "로그인 후 다시 이용해주세요."),
 
     // [GET] /Papers
     EMPTY_PAPER_ID(false, 2050, "PaperId 값을 입력해주세요."),
+    FOUND_URL_INFO_NULL(false, 2051,"해당 URL에 맞는 paperId가 없습니다."),
+    FOUND_NICKNAME_INFO_NULL(false, 2052,"해당 paperId에 맞는 닉네임을 찾을 수 없습니다."),
+    FOUND_PAPER_INFO_NULL(false, 2053,"해당 paperId에 맞는 롤링 페이퍼를 찾을 수 없습니다."),
 
     // [Put] /Papers
-    FAILED_TO_PAPER_UPDATE(false, 2051, "본인의 게시물이 아니면 수정할 수 없습니다."),
+    FAILED_TO_PAPER_UPDATE(false, 2054, "본인의 게시물이 아니면 수정할 수 없습니다."),
 
     // [GET] /Card
     EMPTY_CARD_LIST(true, 2201, "생성된 카드가 없습니다."),
@@ -50,11 +56,7 @@ public enum BaseResponseStatus {
     RESPONSE_NULL_ERROR(false, 3002, "[NULL]접근한 데이터 중 유효한 ROW가 존재하지 않습니다."),
 
     // [POST] /users
-    DUPLICATED_EMAIL(false, 3013, "중복된 이메일입니다."),
     FAILED_TO_LOGIN(false, 3014, "없는 아이디거나 비밀번호가 틀렸습니다."),
-
-    PRICE_MISMATCH(false, 3020, "결제 금액 오류 입니다. 결제가 취소되었습니다."),
-    FAILED_TO_PAY(false, 3021, "결제가 취소되었습니다."),
 
     //    4000 : Database, Server 오류
     DATABASE_ERROR(false, 4000, "데이터베이스 연결에 실패하였습니다."),

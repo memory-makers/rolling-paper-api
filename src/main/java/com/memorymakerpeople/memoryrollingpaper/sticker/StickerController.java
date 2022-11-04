@@ -23,14 +23,17 @@ public class StickerController {
 
     @PostMapping
     @ApiOperation(value = "스티커 편집", notes = "스티커들을 편집합니다. (오픈 날짜 이후 카드 편집 불가)")
-    public BaseResponse<PostStickerRes> createSticker(@RequestBody List<PostStickerReq> postStickerReq){
+    public BaseResponse<PostStickerRes> createSticker(@RequestBody List<PostStickerReq> postStickerReq, Long paperId){
         log.debug("postStickerReq = {}", postStickerReq);
-        return new BaseResponse<>(stickerService.createSticker(postStickerReq));
+        PostStickerRes sticker = stickerService.createSticker(postStickerReq, paperId);
+        return new BaseResponse<>(sticker);
     }
 
     @GetMapping
     @ApiOperation(value = "스티커 목록", notes = "paperId를 기준으로 스티커들을 조회합니다.")
     public BaseResponse<GetStickerListRes> stickerList(Long paperId) {
-        return new BaseResponse<>(stickerService.selectStickerList(paperId));
+        log.debug("paperId = {}", paperId);
+        GetStickerListRes getStickerListRes = stickerService.selectStickerList(paperId);
+        return new BaseResponse<>(getStickerListRes);
     }
 }

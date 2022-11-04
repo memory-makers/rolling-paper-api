@@ -14,18 +14,13 @@ import java.util.Optional;
 @Slf4j
 public class ValidUtil {
 
-    /**
-     * paper 오픈 예정일이 지났는지 validation
-     * @param Paper
-     * @return
-     */
-    public static BaseResponseStatus validCardDueDate(Optional<Paper> Paper) {
-        //카드 오픈 예정일이 오늘이 지났으면 저장하지 않음
-        if (Paper.isPresent()) {
-            if(Paper.get().getDueDate().before(new Timestamp(System.currentTimeMillis()))) {
-                return BaseResponseStatus.INVALID_CARD_DUE_DATE;
-            }
+
+    public static boolean validCardDueDate(Paper Paper) {
+        Timestamp dueDate = Paper.getDueDate();
+
+        if(dueDate.before(new Timestamp(System.currentTimeMillis()))) {
+            return true;
         }
-        return null;
+        return true;
     }
 }

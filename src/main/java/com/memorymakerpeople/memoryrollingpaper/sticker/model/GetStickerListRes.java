@@ -12,5 +12,4 @@ import java.util.List;
 @ToString
 public class GetStickerListRes {
     private List<StickerRes> stickers;
-    private BaseResponseStatus status;
 }

@@ -11,5 +11,4 @@ import lombok.*;
 @ToString
 public class GetPaperNicknameRes {
     private String nickname;
-    private BaseResponseStatus status;
 }

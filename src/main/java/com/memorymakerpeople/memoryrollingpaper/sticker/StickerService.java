@@ -2,6 +2,7 @@ package com.memorymakerpeople.memoryrollingpaper.sticker;
 
 import com.memorymakerpeople.memoryrollingpaper.card.model.PostCardResponse;
 import com.memorymakerpeople.memoryrollingpaper.config.BaseResponseStatus;
+import com.memorymakerpeople.memoryrollingpaper.exception.CustomException;
 import com.memorymakerpeople.memoryrollingpaper.paper.PaperRepository;
 import com.memorymakerpeople.memoryrollingpaper.paper.model.Paper;
 import com.memorymakerpeople.memoryrollingpaper.sticker.model.*;
@@ -12,9 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static com.memorymakerpeople.memoryrollingpaper.config.BaseResponseStatus.*;
 
 @Service
 @Slf4j
@@ -24,40 +28,39 @@ public class StickerService {
     private final StickerRepository stickerRepository;
     private final PaperRepository paperRepository;
 
-    public PostStickerRes createSticker(List<PostStickerReq> postStickerReq) {
+    public PostStickerRes createSticker(List<PostStickerReq> postStickerReq, Long paperId) {
+        if(postStickerReq.isEmpty()) {
+            stickerRepository.deleteAllById(Collections.singleton(paperId));
+            return null;
+        }
+        Optional<Paper> optionalPaper = paperRepository.findByPaperId(paperId);
 
-        Long paperId = postStickerReq.get(0).getPaperId();
-        Optional<Paper> Paper = paperRepository.findByPaperId(paperId);
-
-        BaseResponseStatus INVALID_CARD_DUE_DATE = ValidUtil.validCardDueDate(Paper);
-        if (INVALID_CARD_DUE_DATE != null) {
-            return new PostStickerRes(null,INVALID_CARD_DUE_DATE);
+        if(optionalPaper.isEmpty()) {
+            throw new CustomException(FOUND_PAPER_INFO_NULL);
+        }
+        if (ValidUtil.validCardDueDate(optionalPaper.get())) {
+            throw new CustomException(INVALID_CARD_DUE_DATE);
         }
 
-        List<Sticker> stickers = new ArrayList<>();
-        List<Sticker> deleteStickers = new ArrayList<>();
-        stickerClassification(postStickerReq, stickers, deleteStickers);
+        List<Sticker> result = stickerClassification(postStickerReq);
 
-        log.debug("stickers = {}", stickers);
-        log.debug("deleteStickers = {}", deleteStickers);
-        List<Sticker> result = stickerRepository.saveAll(stickers);
-        stickerRepository.deleteAll(deleteStickers);
-
-        if(!result.isEmpty()) {
-            List<StickerRes> stickerResList = convertStickerToResDto(result);
-            return new PostStickerRes(stickerResList, BaseResponseStatus.SUCCESS);
+        if(result.isEmpty()) {
+            return null;
         }
-        return new PostStickerRes(null, BaseResponseStatus.FAILED_TO_LOAD_STICKERS);
+
+        List<StickerRes> stickerResList = convertStickerToResDto(result);
+        return new PostStickerRes(stickerResList);
     }
 
     public GetStickerListRes selectStickerList(Long paperId) {
         List<Sticker> result = stickerRepository.findByPaperId(paperId);
 
-        if(!result.isEmpty()) {
-            List<StickerRes> stickerResList = convertStickerToResDto(result);
-            return new GetStickerListRes(stickerResList, BaseResponseStatus.SUCCESS);
+        if(result.isEmpty()) {
+            return null;
         }
-        return new GetStickerListRes(null, BaseResponseStatus.FAILED_TO_LOAD_STICKERS);
+
+        List<StickerRes> stickerResList = convertStickerToResDto(result);
+        return new GetStickerListRes(stickerResList);
     }
 
     private List<StickerRes> convertStickerToResDto(List<Sticker> stickers) {
@@ -70,14 +73,25 @@ public class StickerService {
         return stickerResList;
     }
 
-    private void stickerClassification(List<PostStickerReq> postStickerReq, List<Sticker> stickers, List<Sticker> deleteStickers) {
+    private List<Sticker> stickerClassification(List<PostStickerReq> postStickerReq) {
+        List<Sticker> stickers = new ArrayList<>();
+        List<Sticker> deleteStickers = new ArrayList<>();
+
         for (PostStickerReq stickerReq : postStickerReq) {
             Sticker sticker = stickerReq.toEntity();
+
             if(stickerReq.getRequestType().equals("create") || stickerReq.getRequestType().equals("update")) {
                 stickers.add(sticker);
             } else if(stickerReq.getRequestType().equals("delete")) {
                 deleteStickers.add(sticker);
             }
         }
+
+        log.debug("stickers = {}", stickers);
+        log.debug("deleteStickers = {}", deleteStickers);
+        List<Sticker> result = stickerRepository.saveAll(stickers);
+        stickerRepository.deleteAll(deleteStickers);
+
+        return result;
     }
 }
