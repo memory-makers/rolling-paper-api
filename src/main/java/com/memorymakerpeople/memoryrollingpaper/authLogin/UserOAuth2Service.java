@@ -8,6 +8,7 @@ import com.memorymakerpeople.memoryrollingpaper.member.model.PostMemberReq;
 import com.memorymakerpeople.memoryrollingpaper.member.model.PostMemberRes;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.Map;
+import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -53,7 +55,11 @@ public class UserOAuth2Service extends DefaultOAuth2UserService {
             log.debug("가입된 유저");
         }
 
-        Member findMember = memberRepository.findByEmail(email);
+        Optional<Member> optionalMember = memberRepository.findByEmail(email);
+        if(optionalMember.isEmpty()) {
+            throw new OAuth2AuthenticationException("OAuth2 Error");
+        }
+        Member findMember = optionalMember.get();
         findMember.setKakaoId(kakao_Id);
         findMember.setKakaoAccessToken(kakao_AT);
         Member save = memberRepository.save(findMember);
