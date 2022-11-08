@@ -9,4 +9,5 @@ import java.util.Optional;
 public interface StickerRepository extends JpaRepository<Sticker, Long> {
     Optional<Sticker> findByStickerId(Long stickerId);
     List<Sticker> findByPaperId(Long paperId); //아아디로 된 페이퍼 모두 찾기
+    void deleteByPaperId(Long paperId);
 }

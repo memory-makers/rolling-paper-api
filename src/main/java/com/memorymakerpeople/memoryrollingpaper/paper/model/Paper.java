@@ -32,7 +32,7 @@ public class Paper {
     private Timestamp dueDate;
 
     @Builder
-    public Paper(Long paperId, String paperTitle, String theme, String paperUrl, String deleteYn, String userId, Timestamp dueDate) {
+    public Paper(Long paperId, String paperTitle, String theme, String paperUrl, String deleteYn, String userId, Timestamp dueDate, Timestamp createdAt, Timestamp updatedAt) {
         this.paperId = paperId;
         this.paperTitle = paperTitle;
         this.theme = theme;
@@ -40,10 +40,27 @@ public class Paper {
         this.deleteYn = deleteYn;
         this.userId = userId;
         this.dueDate = dueDate;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     public GetPaperRes toGetPaperRes() {
         return new GetPaperRes.GetPaperResBuilder().
+                paperId(this.paperId).
+                paperTitle(this.paperTitle).
+                theme(this.theme).
+                paperUrl(this.paperUrl).
+                deleteYn(this.deleteYn).
+                userId(this.userId).
+                createdAt(this.createdAt).
+                updatedAt(this.updatedAt).
+                dueDate(this.dueDate).
+                build();
+    }
+
+
+    public PutPaperRes toPutPaperRes() {
+        return new PutPaperRes.PutPaperResBuilder().
                 paperId(this.paperId).
                 paperTitle(this.paperTitle).
                 theme(this.theme).

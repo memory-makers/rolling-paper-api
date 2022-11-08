@@ -14,13 +14,7 @@ import java.util.Optional;
 @Slf4j
 public class ValidUtil {
 
-
-    public static boolean validCardDueDate(Paper Paper) {
-        Timestamp dueDate = Paper.getDueDate();
-
-        if(dueDate.before(new Timestamp(System.currentTimeMillis()))) {
-            return true;
-        }
-        return true;
+    public static boolean validCardDueDate(Timestamp dueDate) {
+        return dueDate.before(new Timestamp(System.currentTimeMillis()));
     }
 }
