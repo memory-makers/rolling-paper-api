@@ -58,21 +58,6 @@ public class Paper {
                 build();
     }
 
-
-    public PutPaperRes toPutPaperRes() {
-        return new PutPaperRes.PutPaperResBuilder().
-                paperId(this.paperId).
-                paperTitle(this.paperTitle).
-                theme(this.theme).
-                paperUrl(this.paperUrl).
-                deleteYn(this.deleteYn).
-                userId(this.userId).
-                createdAt(this.createdAt).
-                updatedAt(this.updatedAt).
-                dueDate(this.dueDate).
-                build();
-    }
-
     public void softRemovePaper() {
         this.deleteYn = "Y";
     }

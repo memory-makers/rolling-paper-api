@@ -44,7 +44,7 @@ public class CardService {
             throw new CustomException(BaseResponseStatus.FOUND_PAPER_INFO_NULL);
         }
         Paper paper = optionalPaper.get();
-        log.info("paper = {}",paper);
+        log.debug("paper = {}",paper);
         if (ValidUtil.validCardDueDate(paper.getDueDate())) {
             throw new CustomException(INVALID_CARD_DUE_DATE);
         }
