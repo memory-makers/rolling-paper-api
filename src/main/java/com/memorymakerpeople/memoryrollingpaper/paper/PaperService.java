@@ -59,7 +59,7 @@ public class PaperService {
 
     public PutPaperRes updatePaper(PutPaperReq putPaperReq, String email) {
         //생성한 사람이 아닌 사람이 수정을 시도하는 경우
-        log.info("putPaperReq ={}, email = {}", putPaperReq, email);
+        log.debug("putPaperReq ={}, email = {}", putPaperReq, email);
         if(!paperDao.checkEmailAndPaperId(email, putPaperReq.getPaperId())) {
             throw new CustomException(FAILED_TO_PAPER_UPDATE);
         }
@@ -71,7 +71,7 @@ public class PaperService {
 
         Paper paper = putPaperReq.toEntity(optionalPaper.get());
         Paper savedPaper = paperRepository.save(paper);
-        return savedPaper.toPutPaperRes();
+        return new PutPaperRes(savedPaper.getPaperId());
     }
 
     public GetpaperIdRes selectPaperId(String paperUrl) {

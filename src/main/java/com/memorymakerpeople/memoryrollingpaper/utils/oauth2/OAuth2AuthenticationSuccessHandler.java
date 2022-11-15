@@ -15,7 +15,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Enumeration;
 import java.util.Map;
 
 @Component
@@ -41,8 +40,8 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         //토큰 생성
         String jwt = jwtTokenUtil.generateToken(userLoginRes);
-        logger.info("jwt :: " + jwt);
-        String url = makeRedirectUrl(jwt, request);
+        logger.debug("jwt :: " + jwt);
+        String url = makeRedirectUrl(jwt);
 
         if (response.isCommitted()) {
             logger.debug("응답이 이미 커밋된 상태입니다. " + url + "로 리다이렉트하도록 바꿀 수 없습니다.");
@@ -52,14 +51,8 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     }
 
 
-    private String makeRedirectUrl(String token, HttpServletRequest req) {
-        String referer = req.getHeader("referer");
-        if(referer.equals("https://rolling-paper-makers.vercel.app/")) { //실서버 일 경우
-            return UriComponentsBuilder.fromUriString("https://rolling-paper-makers.vercel.app/kakao?token="+token)
-                    .build().toUriString();
-        }
-        //그 외 개발서버
-        return UriComponentsBuilder.fromUriString("http://localhost:5173/kakao?token="+token)
+    private String makeRedirectUrl(String token) {
+        return UriComponentsBuilder.fromUriString("https://rolling-paper-makers.vercel.app/kakao?token="+token)
                 .build().toUriString();
     }
 }
