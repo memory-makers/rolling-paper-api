@@ -7,6 +7,7 @@ import com.memorymakerpeople.memoryrollingpaper.member.model.Member;
 import com.memorymakerpeople.memoryrollingpaper.paper.model.*;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,7 @@ import static com.memorymakerpeople.memoryrollingpaper.config.BaseResponseStatus
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class PaperService {
 
     private final PaperRepository paperRepository;
@@ -57,18 +59,19 @@ public class PaperService {
 
     public PutPaperRes updatePaper(PutPaperReq putPaperReq, String email) {
         //생성한 사람이 아닌 사람이 수정을 시도하는 경우
+        log.info("putPaperReq ={}, email = {}", putPaperReq, email);
         if(!paperDao.checkEmailAndPaperId(email, putPaperReq.getPaperId())) {
             throw new CustomException(FAILED_TO_PAPER_UPDATE);
         }
 
-        Optional<Paper> paper = paperRepository.findByPaperId(putPaperReq.getPaperId());
-
-        if(paper.isEmpty()) {
+        Optional<Paper> optionalPaper = paperRepository.findByPaperId(putPaperReq.getPaperId());
+        if(optionalPaper.isEmpty()) {
             return null;
         }
-        Paper savedPaper = paperRepository.save(putPaperReq.toEntity(email));
 
-        return new PutPaperRes(savedPaper.getPaperId());
+        Paper paper = putPaperReq.toEntity(optionalPaper.get());
+        Paper savedPaper = paperRepository.save(paper);
+        return savedPaper.toPutPaperRes();
     }
 
     public GetpaperIdRes selectPaperId(String paperUrl) {

@@ -30,7 +30,7 @@ public class StickerService {
 
     public PostStickerRes createSticker(List<PostStickerReq> postStickerReq, Long paperId) {
         if(postStickerReq.isEmpty()) {
-            stickerRepository.deleteAllById(Collections.singleton(paperId));
+            stickerRepository.deleteByPaperId(paperId);
             return null;
         }
         Optional<Paper> optionalPaper = paperRepository.findByPaperId(paperId);
@@ -38,7 +38,8 @@ public class StickerService {
         if(optionalPaper.isEmpty()) {
             throw new CustomException(FOUND_PAPER_INFO_NULL);
         }
-        if (ValidUtil.validCardDueDate(optionalPaper.get())) {
+        Paper paper = optionalPaper.get();
+        if (ValidUtil.validCardDueDate(paper.getDueDate())) {
             throw new CustomException(INVALID_CARD_DUE_DATE);
         }
 
