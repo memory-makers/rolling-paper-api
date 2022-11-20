@@ -4,6 +4,8 @@
 
 📜 [추억의 롤링페이퍼](https://rolling-paper-makers.vercel.app/) 🖋
 
+ [👉프론트 Readme 보러가기👀](https://github.com/memory-makers/rolling-paper)
+
 <br/>
 
 ## 📑 프로젝트 소개
@@ -77,6 +79,3 @@
 2. `java -jar [빌드된 파일명]` 
 
 
----
-
-### [👉프론트 Readme 보러가기👀](https://github.com/memory-makers/rolling-paper)
