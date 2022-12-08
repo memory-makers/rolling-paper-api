@@ -32,9 +32,10 @@ public enum BaseResponseStatus {
     FOUND_URL_INFO_NULL( 2051,"해당 URL에 맞는 paperId가 없습니다."),
     FOUND_NICKNAME_INFO_NULL( 2052,"해당 paperId에 맞는 닉네임을 찾을 수 없습니다."),
     FOUND_PAPER_INFO_NULL( 2053,"해당 paperId에 맞는 롤링 페이퍼를 찾을 수 없습니다."),
+    PAPER_URL_INFO_NULL( 2054,"Url에 해당하는 롤링페이퍼를 찾을 수 없습니다."),
 
     // [Put] /Papers
-    FAILED_TO_PAPER_UPDATE( 2054, "본인의 게시물이 아니면 수정할 수 없습니다."),
+    FAILED_TO_PAPER_UPDATE( 2055, "본인의 게시물이 아니면 수정할 수 없습니다."),
 
     // [GET] /Card
     EMPTY_CARD_LIST(2201, "생성된 카드가 없습니다."),

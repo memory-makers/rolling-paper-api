@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -76,11 +77,12 @@ public class PaperService {
 
     public GetpaperIdRes selectPaperId(String paperUrl) {
         PaperIdMapping paper = paperRepository.findByPaperUrl(paperUrl);
-        Long paperId = paper.getPaperId();
 
-        if (paperId == null) {
-            throw new CustomException(FOUND_URL_INFO_NULL);
+        if (ObjectUtils.isEmpty(paper)) {
+            throw new CustomException(PAPER_URL_INFO_NULL);
         }
+
+        Long paperId = paper.getPaperId();
 
         return new GetpaperIdRes(paperId);
     }
